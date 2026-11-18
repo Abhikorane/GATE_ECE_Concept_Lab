@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GATE EC Concept Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/katex.min.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="#home"><b>GATE EC Concept Lab</b><span>EC syllabus · 8 sections · 44 simulations</span></a>
+    <nav id="nav" aria-label="Syllabus sections"></nav>
+    <div class="rail-meter"><span data-pg="all">0 topics done</span><div class="meter"><i data-bar="all"></i></div>Progress is saved in this browser only.</div>
+  </aside>
+  <main>
+    <div class="col">
+      <div id="home" class="home">
+        <header class="home-hd">
+          <p class="eyebrow">Electronics and Communication Engineering · built from the GATE 2027 syllabus</p>
+          <h1>Every syllabus line, as something you can move</h1>
+          <p class="lede">Each topic has short notes, a simulation with sliders, a place you have already met the idea in real life, the traps that cost marks, and solved practice questions. Tick a topic when you can explain it without looking.</p>
+        </header>
+
+        <div class="strip" aria-label="Paper pattern">
+          <div><b>65</b><span>questions in 3 hours</span></div>
+          <div><b>100</b><span>marks in total</span></div>
+          <div><b>15</b><span>marks General Aptitude</span></div>
+          <div><b>≈13</b><span>marks Engineering Maths</span></div>
+          <div><b>≈72</b><span>marks core EC subjects</span></div>
+        </div>
+        <p class="ref">Multiple-choice questions lose ⅓ mark (1-mark) or ⅔ mark (2-mark) for a wrong answer. Multiple-select and numerical-answer questions have no negative marking. Confirm the pattern in the official information brochure for your exam year.</p>
+
+        <h2>The eight sections</h2>
+        <div class="cards" id="cards"></div>
+        <p class="ref">The marks shown per section are rough ranges seen in recent papers. They change every year, so use them only to decide what to study first.</p>
+
+        <h2>How to use one topic</h2>
+        <ol class="steps">
+          <li><div><b>Read the notes once.</b> They hold the results GATE expects you to recall, not the derivations. Derive each one from your textbook at least once.</div></li>
+          <li><div><b>Play with the simulation before solving anything.</b> Predict what will happen when you move a slider, then move it. A wrong prediction is the most useful thing on the page.</div></li>
+          <li><div><b>Read the real-life link.</b> Application-style questions are easier when the formula is attached to a picture.</div></li>
+          <li><div><b>Read the traps.</b> Most lost marks come from sign conventions, units, and a formula used outside its conditions.</div></li>
+          <li><div><b>Solve the practice questions on paper,</b> then open the solution. Tick “Done” only when you got them right unaided.</div></li>
+        </ol>
+
+        <h2>A study plan around 12-hour workdays</h2>
+        <p>From November 2026 to an exam in February 2028 there are about 15 months. With long shifts, steady short sessions beat occasional long ones. One topic from this site fits in a 45 to 60 minute sitting.</p>
+        <div class="tw"><table class="plan">
+          <thead><tr><th>When</th><th>Focus</th><th>Why in this order</th></tr></thead>
+          <tbody>
+            <tr><td>Nov 2026 to Mar 2027</td><td>Engineering Maths, Networks, Signals and Systems</td><td>Every later subject uses Laplace, Fourier, phasors and differential equations.</td></tr>
+            <tr><td>Apr to Jul 2027</td><td>Electronic Devices, Analog Circuits, Digital Circuits</td><td>Devices explain the models that Analog uses. Digital is independent and scoring.</td></tr>
+            <tr><td>Aug to Oct 2027</td><td>Control Systems, Communications, Electromagnetics</td><td>These build on signals, probability and vector calculus from the first phase.</td></tr>
+            <tr><td>Nov to Dec 2027</td><td>Full revision with topic-wise previous-year questions</td><td>Previous papers show how each formula is actually asked.</td></tr>
+            <tr><td>Jan to Feb 2028</td><td>Full-length timed mock tests, error log, formula revision</td><td>Speed, question selection and negative-marking discipline are trained only under the clock.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tw"><table class="plan">
+          <thead><tr><th>Slot</th><th>What to do</th></tr></thead>
+          <tbody>
+            <tr><td>Work day, 45 to 60 min</td><td>One topic here: notes, simulation, then 5 to 10 textbook or previous-year problems on it.</td></tr>
+            <tr><td>Work day, a 10 min break</td><td>Recall yesterday’s formulas from memory on paper, then check them on your phone.</td></tr>
+            <tr><td>Off day, 3 to 4 hours</td><td>Problem solving on the week’s topics. Keep an error log: question, mistake, correct idea.</td></tr>
+            <tr><td>Once a week</td><td>One revision sitting of older topics and one 30-minute timed quiz.</td></tr>
+            <tr><td>Throughout</td><td>General Aptitude: 15 marks for little effort. Do 10 questions twice a week from month one.</td></tr>
+          </tbody>
+        </table></div>
+
+        <p class="note"><b>Two cautions.</b> This site follows the GATE 2027 EC syllabus you gave me. The syllabus has been stable for several years, but check the GATE 2028 brochure when it is released. The notes are a revision aid written to be compact, and a compact note can hide a condition or contain a slip: confirm every key result against a standard textbook, listed at the top of each section.</p>
+      </div>
+      <div id="view" hidden></div>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/sims-maths.js"></script>
+<script src="js/sims-nss.js"></script>
+<script src="js/sims-devices.js"></script>
+<script src="js/sims-analog.js"></script>
+<script src="js/sims-digital.js"></script>
+<script src="js/sims-control.js"></script>
+<script src="js/sims-comm.js"></script>
+<script src="js/sims-em.js"></script>
+<script>GS.boot();</script>
+</body>
+</html>

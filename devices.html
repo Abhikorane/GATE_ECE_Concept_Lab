@@ -1,0 +1,207 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 3 · roughly 7 to 10 marks</p>
+  <h1>Electronic Devices</h1>
+  <p class="lede">A small set of formulas used again and again with different numbers. Most errors here are unit errors, so work in centimetres throughout and write the units on every line.</p>
+  <p class="ref"><b>Standard references:</b> Neamen, <i>Semiconductor Physics and Devices</i>; Streetman and Banerjee, <i>Solid State Electronic Devices</i>. <b>Constants at 300 K:</b> \(kT/q=25.9\text{ mV}\), \(q=1.6\times10^{-19}\text{ C}\), \(\varepsilon_0=8.854\times10^{-14}\text{ F/cm}\), \(\varepsilon_{r,\text{Si}}=11.7\), \(\varepsilon_{r,\text{SiO}_2}=3.9\).</p>
+</header>
+
+<section class="topic" id="d-bands">
+  <h2>Energy bands and carriers</h2>
+  <p class="syl">Syllabus: formation of energy bands in solids, energy bands in intrinsic and extrinsic semiconductors, equilibrium carrier concentration, direct and indirect band-gap semiconductors.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Why bands form:</b> when atoms come close in a crystal, each discrete atomic level splits into a band of closely spaced levels. The valence band and the conduction band are separated by the gap \(E_g\). At 300 K: Si 1.12 eV, Ge 0.66 eV, GaAs 1.42 eV.</li>
+    <li><b>Intrinsic:</b> \(n=p=n_i\), with \(n_i^2=N_cN_v\,e^{-E_g/kT}\). For Si at 300 K most GATE questions use \(n_i=1.5\times10^{10}\text{ cm}^{-3}\). Always use the value given in the question.</li>
+    <li><b>Mass-action law</b> at equilibrium: \(np=n_i^2\), for any doping.</li>
+    <li><b>Fermi–Dirac:</b> \(f(E)=\dfrac{1}{1+e^{(E-E_F)/kT}}\), and \(f(E_F)=\tfrac12\) at any temperature.</li>
+    <li>\(n=N_c\,e^{-(E_c-E_F)/kT}=n_i\,e^{(E_F-E_i)/kT}\) and \(p=n_i\,e^{(E_i-E_F)/kT}\).</li>
+    <li><b>n-type</b> (donors P, As, Sb): \(n\approx N_D\), \(p=n_i^2/N_D\), \(E_F-E_i=kT\ln(N_D/n_i)\). <b>p-type</b> (acceptors B, Al, Ga): \(p\approx N_A\), \(E_i-E_F=kT\ln(N_A/n_i)\).</li>
+    <li><b>Both dopants present</b> (charge neutrality \(n+N_A=p+N_D\)): \[n=\frac{N_D-N_A}{2}+\sqrt{\left(\frac{N_D-N_A}{2}\right)^2+n_i^2}\]</li>
+    <li><b>Temperature regions:</b> freeze-out (dopants not ionised) at very low \(T\), extrinsic (\(n\approx N_D\)) over the useful range, intrinsic (\(n_i\gt N_D\)) at high \(T\).</li>
+    <li><b>Direct gap</b> (GaAs, InP, GaN): the conduction-band minimum and valence-band maximum are at the same crystal momentum, so an electron can drop and emit a photon. <b>Indirect gap</b> (Si, Ge): a phonon is also needed, so light emission is very inefficient.</li>
+  </ul></div>
+  <div class="sim" data-sim="fermi"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>LEDs and laser diodes are made from GaAs, GaN and their alloys, never from silicon, because silicon’s indirect gap turns almost all recombination into heat. Electronics has a maximum junction temperature (often 125 to 175 °C for silicon) partly because \(n_i\) climbs steeply with temperature until leakage swamps the doping. A thermistor uses that same steep temperature dependence as a sensor.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>\(np=n_i^2\) holds only at thermal equilibrium, not under illumination or bias.</li>
+    <li>\(n_i\) differs between textbooks (\(1.0\times10^{10}\) or \(1.5\times10^{10}\) for Si). Use the question’s value.</li>
+    <li>\(E_i\) is not exactly at mid-gap unless the effective masses are equal. Most questions say to assume it is.</li>
+    <li>\(kT\) is 25.9 meV only at 300 K. Scale it if the temperature differs.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Silicon is doped with \(N_D=10^{16}\text{ cm}^{-3}\), \(n_i=1.5\times10^{10}\text{ cm}^{-3}\), \(T=300\text{ K}\). Find the hole concentration and \(E_F-E_i\).</summary><div class="sol">
+    <p>\(p=\dfrac{n_i^2}{N_D}=\dfrac{2.25\times10^{20}}{10^{16}}=2.25\times10^4\text{ cm}^{-3}\).</p>
+    <p>\(E_F-E_i=0.0259\ln\dfrac{10^{16}}{1.5\times10^{10}}=0.0259\times13.41=0.347\text{ eV}\). The simulation opens on exactly these values.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="d-transport">
+  <h2>Carrier transport</h2>
+  <p class="syl">Syllabus: diffusion current, drift current, mobility and resistivity, generation and recombination of carriers, Poisson and continuity equations.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Drift:</b> \(v_d=\mu E\). \(J_{drift}=q(n\mu_n+p\mu_p)E=\sigma E\), and \(\rho=1/\sigma\). Typical Si values at 300 K with light doping: \(\mu_n\approx1350\), \(\mu_p\approx480\text{ cm}^2/(\text{V}\cdot\text{s})\).</li>
+    <li><b>Mobility</b> falls as doping rises (impurity scattering) and as temperature rises in the normal range (lattice scattering, \(\mu\propto T^{-3/2}\)). At high field the velocity saturates near \(10^7\text{ cm/s}\) in Si.</li>
+    <li><b>Diffusion:</b> \(J_n=qD_n\dfrac{dn}{dx}\) and \(J_p=-qD_p\dfrac{dp}{dx}\). Electrons diffusing down a gradient carry current up it, hence the opposite signs.</li>
+    <li><b>Einstein relation:</b> \(\dfrac{D}{\mu}=\dfrac{kT}{q}\).</li>
+    <li><b>Recombination:</b> under low-level injection, excess minority carriers decay as \(\delta p(t)=\delta p(0)\,e^{-t/\tau_p}\). The recombination rate is \(\delta p/\tau_p\).</li>
+    <li><b>Continuity equation</b> (holes): \[\frac{\partial p}{\partial t}=-\frac1q\frac{\partial J_p}{\partial x}+G-R\] In steady state with diffusion only: \(\delta p(x)=\delta p(0)\,e^{-x/L_p}\), where \(L_p=\sqrt{D_p\tau_p}\) is the diffusion length.</li>
+    <li><b>Poisson’s equation:</b> \(\dfrac{dE}{dx}=\dfrac{\rho}{\varepsilon}=\dfrac{q}{\varepsilon}(p-n+N_D-N_A)\), with \(E=-\dfrac{dV}{dx}\).</li>
+    <li><b>Hall effect:</b> \(R_H=\dfrac{1}{qp}\) for p-type, \(-\dfrac{1}{qn}\) for n-type. The sign gives the carrier type, the magnitude gives the concentration, and \(\mu=\sigma|R_H|\).</li>
+  </ul></div>
+  <div class="sim" data-sim="driftdiff"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Hall-effect sensors are everywhere in a car: wheel-speed sensors for ABS, crankshaft and camshaft position sensors, and brushless-motor commutation. Each is a small semiconductor plate in which a magnetic field pushes drifting carriers sideways and produces a measurable voltage. Diffusion is the same process that spreads a drop of ink through still water.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Mixing metres and centimetres. \(\mu\) in cm²/V·s needs \(n\) in cm⁻³ and \(E\) in V/cm.</li>
+    <li>The hole diffusion current has a minus sign. The electron diffusion current does not.</li>
+    <li>Conductivity is set almost entirely by the majority carrier. Do not forget this and add a negligible term with the wrong exponent.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>n-type silicon has \(N_D=10^{16}\text{ cm}^{-3}\) and \(\mu_n=1350\text{ cm}^2/(\text{V}\cdot\text{s})\). Find its resistivity.</summary><div class="sol">
+    <p>\(\sigma=qN_D\mu_n=1.6\times10^{-19}\times10^{16}\times1350=2.16\ (\Omega\cdot\text{cm})^{-1}\). \(\rho=0.463\ \Omega\cdot\text{cm}\).</p>
+  </div></details>
+  <details class="q"><summary>With \(\mu_n=1350\text{ cm}^2/(\text{V}\cdot\text{s})\) and an electron lifetime of 1 µs at 300 K, find \(D_n\) and the diffusion length.</summary><div class="sol">
+    <p>\(D_n=\mu_n\dfrac{kT}{q}=1350\times0.0259=35\text{ cm}^2/\text{s}\).</p>
+    <p>\(L_n=\sqrt{D_n\tau_n}=\sqrt{35\times10^{-6}}=5.9\times10^{-3}\text{ cm}=59\ \mu\text{m}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="d-pn">
+  <h2>P-N junction and Zener</h2>
+  <p class="syl">Syllabus: P-N junction, Zener diode.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Built-in potential:</b> \(V_{bi}=\dfrac{kT}{q}\ln\dfrac{N_AN_D}{n_i^2}\).</li>
+    <li><b>Depletion width</b> (abrupt junction, applied voltage \(V\), negative for reverse bias): \[W=\sqrt{\frac{2\varepsilon}{q}\left(\frac{1}{N_A}+\frac{1}{N_D}\right)(V_{bi}-V)}\]</li>
+    <li>Charge balance \(N_Ax_p=N_Dx_n\), so the depletion region extends mainly into the lightly doped side. Peak field \(E_{max}=\dfrac{qN_Dx_n}{\varepsilon}=\dfrac{2(V_{bi}-V)}{W}\).</li>
+    <li><b>Junction (depletion) capacitance:</b> \(C_j=\dfrac{\varepsilon A}{W}=\dfrac{C_{j0}}{(1-V/V_{bi})^m}\) with \(m=\tfrac12\) for an abrupt junction and \(\tfrac13\) for a linearly graded one. Dominates in reverse bias.</li>
+    <li><b>Diffusion capacitance:</b> \(C_d=\dfrac{\tau I}{V_T}\). Dominates in forward bias.</li>
+    <li><b>Diode equation:</b> \(I=I_s\big(e^{V/\eta V_T}-1\big)\), with \(I_s=qA\,n_i^2\left(\dfrac{D_p}{L_pN_D}+\dfrac{D_n}{L_nN_A}\right)\).</li>
+    <li>Small-signal resistance \(r_d=\dfrac{\eta V_T}{I}\). At constant current the forward voltage falls by about 2 mV per °C. \(I_s\) roughly doubles for every 10 °C rise.</li>
+    <li><b>Zener breakdown:</b> tunnelling across a very thin depletion region, both sides heavily doped, below about 5 V, negative temperature coefficient. <b>Avalanche breakdown:</b> impact ionisation, lighter doping, above about 7 V, positive temperature coefficient.</li>
+    <li><b>Zener regulator:</b> choose the series resistor so that the Zener current stays between \(I_{Z,min}\) and \(I_{Z,max}\) over the full range of input voltage and load current: \(R=\dfrac{V_{in}-V_Z}{I_Z+I_L}\).</li>
+  </ul></div>
+  <div class="sim" data-sim="pn"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A varactor diode is a reverse-biased junction used as a voltage-controlled capacitor. It tunes the oscillator in every FM radio and phone. Zener and TVS diodes clamp voltage spikes on power and signal lines. The −2 mV/°C drift of a forward-biased junction is used as the temperature sensor inside processors and power modules.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>In \(W\), the term is \((V_{bi}-V)\). For 5 V reverse bias this is \(V_{bi}+5\).</li>
+    <li>Use \(\varepsilon=\varepsilon_r\varepsilon_0\) with \(\varepsilon_0=8.854\times10^{-14}\text{ F/cm}\) when doping is in cm⁻³.</li>
+    <li>“60 mV per decade” of current applies to an ideal diode with \(\eta=1\) at room temperature.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A silicon junction has \(N_A=10^{17}\) and \(N_D=10^{15}\text{ cm}^{-3}\), with \(n_i=1.5\times10^{10}\). Find \(V_{bi}\) at 300 K. On which side is most of the depletion region?</summary><div class="sol">
+    <p>\(V_{bi}=0.0259\ln\dfrac{10^{32}}{2.25\times10^{20}}=0.0259\times26.82=0.695\text{ V}\).</p>
+    <p>\(x_n/x_p=N_A/N_D=100\), so 99 % of the depletion region lies in the lightly doped n side.</p>
+  </div></details>
+  <details class="q"><summary>An ideal diode carries 1 mA at 0.70 V. Find its small-signal resistance, and the current at 0.76 V.</summary><div class="sol">
+    <p>\(r_d=V_T/I=25.9\ \Omega\).</p>
+    <p>\(I=1\text{ mA}\times e^{0.06/0.0259}=1\text{ mA}\times e^{2.32}\approx10\text{ mA}\). An extra 60 mV multiplies the current by ten.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="d-bjt">
+  <h2>BJT</h2>
+  <p class="syl">Syllabus: BJT.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Modes:</b> active (emitter junction forward, collector junction reverse), saturation (both forward), cut-off (both reverse), reverse active (roles swapped).</li>
+    <li>\(I_E=I_C+I_B\). \(I_C=\beta I_B=\alpha I_E\). \(\beta=\dfrac{\alpha}{1-\alpha}\) and \(\alpha=\dfrac{\beta}{1+\beta}\).</li>
+    <li>\(\alpha=\gamma\,\alpha_T\): emitter injection efficiency times base transport factor. For a high \(\beta\): dope the emitter far more heavily than the base (\(\gamma\to1\)) and make the base thin compared with the diffusion length, \(\alpha_T\approx1-\dfrac{W_B^2}{2L_B^2}\).</li>
+    <li>Doping order: emitter &gt; base &gt; collector. The collector has the largest area.</li>
+    <li>\(I_C=I_S\,e^{V_{BE}/V_T}\left(1+\dfrac{V_{CE}}{V_A}\right)\). The second factor is the <b>Early effect</b>: a larger \(V_{CE}\) widens the collector depletion region and narrows the base.</li>
+    <li>Leakage: \(I_C=\beta I_B+(1+\beta)I_{CBO}\), so \(I_{CEO}=(1+\beta)I_{CBO}\).</li>
+    <li>Small-signal parameters: \(g_m=\dfrac{I_C}{V_T}\), \(r_\pi=\dfrac{\beta}{g_m}\), \(r_e=\dfrac{V_T}{I_E}\), \(r_o=\dfrac{V_A}{I_C}\), \(f_T=\dfrac{g_m}{2\pi(C_\pi+C_\mu)}\).</li>
+    <li>In saturation \(V_{CE,sat}\approx0.2\text{ V}\) and \(I_C\lt\beta I_B\).</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>An optocoupler is an LED facing a phototransistor in one package. It passes a signal with no electrical connection, which is how industrial controller inputs are isolated from field wiring. The difference between the \(V_{BE}\) of two BJTs run at different currents is exactly proportional to absolute temperature. Band-gap voltage references and chip temperature sensors are built on that fact.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>After assuming active mode, verify \(V_{CE}\gt0.2\text{ V}\). If not, the transistor is saturated and \(I_C=\beta I_B\) no longer holds.</li>
+    <li>A small change in \(\alpha\) is a large change in \(\beta\): \(\alpha=0.98\) gives \(\beta=49\), and \(\alpha=0.99\) gives \(\beta=99\).</li>
+    <li>For a pnp transistor every voltage polarity and current direction reverses.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A transistor has \(\alpha=0.98\) and \(I_{CBO}=1\ \mu\text{A}\). Find \(I_C\) for \(I_B=20\ \mu\text{A}\).</summary><div class="sol">
+    <p>\(\beta=0.98/0.02=49\). \(I_C=49\times20\ \mu\text{A}+50\times1\ \mu\text{A}=0.98+0.05=1.03\text{ mA}\).</p>
+  </div></details>
+  <details class="q"><summary>A BJT is biased at \(I_C=1\text{ mA}\) with \(\beta=100\) and \(V_A=100\text{ V}\). Find \(g_m\), \(r_\pi\) and \(r_o\) at 300 K.</summary><div class="sol">
+    <p>\(g_m=\dfrac{1\text{ mA}}{25.9\text{ mV}}=38.6\text{ mS}\). \(r_\pi=\dfrac{100}{38.6\text{ mS}}=2.59\text{ k}\Omega\). \(r_o=\dfrac{100}{1\text{ mA}}=100\text{ k}\Omega\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="d-mos">
+  <h2>MOS capacitor and MOSFET</h2>
+  <p class="syl">Syllabus: MOS capacitor, MOSFET, scaling in MOSFETs.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>MOS capacitor on p-type silicon:</b> accumulation for \(V_G\lt V_{FB}\) (holes at the surface), depletion just above \(V_{FB}\), inversion for \(V_G\gt V_T\) (an electron layer at the surface). Strong inversion begins when the surface potential reaches \(2\phi_F\), with \(\phi_F=\dfrac{kT}{q}\ln\dfrac{N_A}{n_i}\).</li>
+    <li><b>Threshold voltage:</b> \[V_T=V_{FB}+2\phi_F+\frac{\sqrt{2q\varepsilon_sN_A(2\phi_F)}}{C_{ox}},\qquad C_{ox}=\frac{\varepsilon_{ox}}{t_{ox}}\]</li>
+    <li><b>Body effect:</b> \(V_T=V_{T0}+\gamma\big(\sqrt{2\phi_F+V_{SB}}-\sqrt{2\phi_F}\big)\), \(\gamma=\dfrac{\sqrt{2q\varepsilon_sN_A}}{C_{ox}}\).</li>
+    <li><b>C–V curve:</b> \(C_{ox}\) in accumulation, falling through depletion as \(C_{ox}\) in series with \(C_{dep}\). In inversion a low-frequency measurement returns to \(C_{ox}\), while a high-frequency measurement stays at the minimum.</li>
+    <li><b>MOSFET drain current</b> with \(V_{ov}=V_{GS}-V_T\) and \(k_n=\mu_nC_{ox}\dfrac WL\): triode (\(V_{DS}\lt V_{ov}\)): \(I_D=k_n\big[V_{ov}V_{DS}-\tfrac12V_{DS}^2\big]\). Saturation (\(V_{DS}\ge V_{ov}\)): \(I_D=\tfrac12k_nV_{ov}^2(1+\lambda V_{DS})\).</li>
+    <li>In saturation: \(g_m=k_nV_{ov}=\sqrt{2k_nI_D}=\dfrac{2I_D}{V_{ov}}\) and \(r_o=\dfrac{1}{\lambda I_D}\). In deep triode the channel is a resistor \(\dfrac{1}{k_nV_{ov}}\).</li>
+    <li>pMOS uses holes, whose mobility is roughly 2 to 3 times lower, so pMOS devices are made wider in CMOS gates.</li>
+    <li><b>Short-channel effects:</b> threshold roll-off, drain-induced barrier lowering, velocity saturation, hot carriers, and subthreshold leakage (at best 60 mV per decade at 300 K).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Scaling by \(\kappa\gt1\)</th><th>Constant field</th><th>Constant voltage</th></tr></thead>
+    <tbody>
+      <tr><td>Dimensions \(L,W,t_{ox}\)</td><td>\(1/\kappa\)</td><td>\(1/\kappa\)</td></tr>
+      <tr><td>Voltages</td><td>\(1/\kappa\)</td><td>1</td></tr>
+      <tr><td>Doping</td><td>\(\kappa\)</td><td>\(\kappa^2\)</td></tr>
+      <tr><td>\(C_{ox}\) per area</td><td>\(\kappa\)</td><td>\(\kappa\)</td></tr>
+      <tr><td>Drain current</td><td>\(1/\kappa\)</td><td>\(\kappa\)</td></tr>
+      <tr><td>Gate delay</td><td>\(1/\kappa\)</td><td>\(1/\kappa^2\)</td></tr>
+      <tr><td>Power per transistor</td><td>\(1/\kappa^2\)</td><td>\(\kappa\)</td></tr>
+      <tr><td>Power density</td><td>1</td><td>\(\kappa^3\)</td></tr>
+    </tbody>
+  </table></div></div>
+  <div class="sim" data-sim="mosfet"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A phone processor contains billions of MOSFETs used as switches, and decades of scaling is what made that possible. The same device at a much larger size, as a power MOSFET or IGBT, switches the current in motor drives, inverters and chargers. A touch-lamp dimmer and an analog multiplexer both use the deep-triode region, where the MOSFET is a voltage-controlled resistor.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>“Saturation” means opposite things: for a MOSFET it is the amplifying region, for a BJT it is the fully-on switch region.</li>
+    <li>Some books define \(k_n'=\mu_nC_{ox}\) without \(W/L\), and some absorb the \(\tfrac12\). Read the question’s definition.</li>
+    <li>Always check \(V_{DS}\) against \(V_{ov}\) before choosing a formula.</li>
+    <li>A source-to-body reverse bias raises \(V_T\). It never lowers it.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>An nMOS has \(\mu_nC_{ox}=100\ \mu\text{A/V}^2\), \(W/L=10\), \(V_T=1\text{ V}\), \(\lambda=0\). Find \(I_D\) and \(g_m\) for \(V_{GS}=2\text{ V}\), \(V_{DS}=3\text{ V}\). Repeat for \(V_{DS}=0.5\text{ V}\).</summary><div class="sol">
+    <p>\(k_n=1\text{ mA/V}^2\), \(V_{ov}=1\text{ V}\). For \(V_{DS}=3\text{ V}\ge V_{ov}\): saturation. \(I_D=\tfrac12(1)(1)^2=0.5\text{ mA}\) and \(g_m=k_nV_{ov}=1\text{ mS}\).</p>
+    <p>For \(V_{DS}=0.5\text{ V}\lt V_{ov}\): triode. \(I_D=1\times\big[(1)(0.5)-0.125\big]=0.375\text{ mA}\). Set these values in the simulation with \(\lambda=0\) to confirm.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="d-opto">
+  <h2>LED, photodiode, solar cell</h2>
+  <p class="syl">Syllabus: LED, photo diode and solar cell.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Photon energy:</b> \(E=hf=\dfrac{hc}{\lambda}\). In practical units \(\lambda(\mu\text{m})=\dfrac{1.24}{E(\text{eV})}\).</li>
+    <li><b>LED:</b> a forward-biased junction in a direct-gap material. Injected carriers recombine and emit photons with energy close to \(E_g\), so the material sets the colour. GaAs emits infrared near 870 nm. GaN-based alloys emit blue, and a phosphor converts part of it to make white.</li>
+    <li><b>Photodiode:</b> operated in reverse bias (third quadrant). Light with \(hf\ge E_g\) generates electron-hole pairs, adding a photocurrent \(I_{ph}\) to the reverse current. Cut-off wavelength \(\lambda_c=1.24/E_g\).</li>
+    <li><b>Responsivity:</b> \(R=\dfrac{I_{ph}}{P_{opt}}=\eta\,\dfrac{q\lambda}{hc}=\dfrac{\eta\,\lambda(\mu\text{m})}{1.24}\text{ A/W}\), where \(\eta\) is the quantum efficiency.</li>
+    <li>A <b>PIN</b> photodiode has a wide intrinsic layer, giving high efficiency and low capacitance, hence speed. An <b>avalanche</b> photodiode adds internal gain.</li>
+    <li><b>Solar cell:</b> the same junction with no external bias, delivering power in the fourth quadrant: \(I=I_L-I_s\big(e^{V/V_T}-1\big)\) with \(V_T=kT/q\). Short-circuit current \(I_{sc}=I_L\). Open-circuit voltage \(V_{oc}=V_T\ln\!\left(\dfrac{I_L}{I_s}+1\right)\).</li>
+    <li><b>Fill factor</b> \(FF=\dfrac{V_mI_m}{V_{oc}I_{sc}}\) and efficiency \(\eta=\dfrac{V_mI_m}{P_{in}}\). \(I_{sc}\) is proportional to light intensity. \(V_{oc}\) grows only logarithmically with it.</li>
+  </ul></div>
+  <div class="sim" data-sim="solar"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A TV remote is an infrared LED, and the TV’s receiver is a photodiode. An optical-fibre link is a laser at one end and a PIN photodiode at the other. Photoelectric sensors on a conveyor detect a part when it interrupts the beam between an LED and a photodiode. Rooftop solar inverters run a maximum power point tracker that keeps each panel at the peak of its power curve as the sunlight changes.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>A photodiode is reverse biased. A solar cell is unbiased and generates power. An LED is forward biased.</li>
+    <li>Silicon cannot detect wavelengths beyond about 1.1 µm, because those photons have less energy than its gap.</li>
+    <li>Responsivity rises with wavelength up to the cut-off, then drops to zero.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>GaAs has \(E_g=1.42\text{ eV}\). What wavelength does a GaAs LED emit? A photodiode has a quantum efficiency of 0.8 at 0.87 µm. Find its responsivity.</summary><div class="sol">
+    <p>\(\lambda=1.24/1.42=0.873\ \mu\text{m}\), in the near infrared.</p>
+    <p>\(R=0.8\times0.87/1.24=0.56\text{ A/W}\).</p>
+  </div></details>
+  <details class="q"><summary>A solar cell has \(I_L=3\text{ A}\) and \(I_s=1\text{ nA}\) at 300 K. Find \(V_{oc}\).</summary><div class="sol">
+    <p>\(V_{oc}=0.0259\ln(3\times10^9)=0.0259\times21.82=0.565\text{ V}\). The simulation uses these values at 1 sun.</p>
+  </div></details>
+</section>

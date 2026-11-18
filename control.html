@@ -1,0 +1,210 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 6 · roughly 8 to 10 marks</p>
+  <h1>Control Systems</h1>
+  <p class="lede">One idea seen from four angles: where the closed-loop poles are. The time response, Routh table, root locus and frequency plots are all ways of answering that question.</p>
+  <p class="ref"><b>Standard references:</b> Nise, <i>Control Systems Engineering</i>; Ogata, <i>Modern Control Engineering</i>; Nagrath and Gopal, <i>Control Systems Engineering</i>.</p>
+</header>
+
+<section class="topic" id="c-model">
+  <h2>Feedback and system models</h2>
+  <p class="syl">Syllabus: basic control system components, feedback principle, transfer function, block diagram representation, signal flow graph.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Components of a loop:</b> the plant (what is controlled), a sensor, an error detector that compares the set-point with the measurement, a controller, and an actuator.</li>
+    <li><b>Transfer function:</b> the ratio of the Laplace transform of the output to that of the input with all initial conditions zero. Defined only for linear time-invariant systems. Its denominator set to zero is the characteristic equation.</li>
+    <li><b>Negative feedback:</b> \[T(s)=\frac{G(s)}{1+G(s)H(s)}\] The closed-loop poles are the roots of \(1+G(s)H(s)=0\).</li>
+    <li><b>What feedback buys:</b> sensitivity to changes in the plant falls by \(1+GH\): \(S^T_G=\dfrac{1}{1+GH}\). Disturbances are reduced by the same factor. Bandwidth increases. The costs are a lower gain, and the possibility of instability.</li>
+    <li>Feedback does not protect against errors in the sensor: \(S^T_H\approx-1\) when \(GH\gg1\).</li>
+    <li><b>Block diagram rules:</b> blocks in cascade multiply. Blocks in parallel add. Moving a pick-off point or a summing point across a block requires multiplying or dividing the moved branch by that block.</li>
+    <li><b>Mason’s gain formula</b> for a signal flow graph: \[T=\frac{\sum_kP_k\Delta_k}{\Delta}\] \(\Delta=1-\sum(\text{loop gains})+\sum(\text{products of pairs of non-touching loops})-\dots\) and \(\Delta_k\) is \(\Delta\) with every loop that touches forward path \(P_k\) removed.</li>
+    <li><b>Type</b> is the number of open-loop poles at the origin. <b>Order</b> is the degree of the characteristic polynomial.</li>
+    <li><b>Analogies:</b> force–voltage: mass ↔ inductance, damper ↔ resistance, spring constant ↔ 1/capacitance. Force–current: mass ↔ capacitance, damper ↔ 1/resistance, spring constant ↔ 1/inductance.</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The float valve in a toilet cistern is a complete feedback loop: the float is the sensor, the lever is the controller, the valve is the actuator. Cruise control, an air conditioner’s thermostat and the autofocus of a camera work the same way. An op-amp circuit with resistors is the electronic version: the resistor ratio sets the gain precisely because feedback makes the result insensitive to the op-amp’s own gain.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The sign in the denominator is plus for negative feedback and minus for positive feedback.</li>
+    <li>In Mason’s formula, two loops are non-touching only if they share no node at all.</li>
+    <li>A transfer function hides initial conditions. It cannot be used when they are non-zero.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>\(G(s)=\dfrac{10}{s+1}\) is placed in a unity negative feedback loop. Find the closed-loop DC gain and time constant.</summary><div class="sol">
+    <p>\(T(s)=\dfrac{10}{s+11}\). DC gain \(=10/11=0.909\). Time constant \(=1/11\text{ s}\), eleven times faster than the plant alone.</p>
+  </div></details>
+  <details class="q"><summary>A signal flow graph has one forward path of gain \(G_1G_2\) and two non-touching loops with gains \(-G_1H_1\) and \(-G_2H_2\). The forward path touches both loops. Find the transfer function.</summary><div class="sol">
+    <p>\(\Delta=1+G_1H_1+G_2H_2+G_1G_2H_1H_2\) and \(\Delta_1=1\).</p>
+    <p>\(T=\dfrac{G_1G_2}{1+G_1H_1+G_2H_2+G_1G_2H_1H_2}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="c-time">
+  <h2>Transient and steady-state response</h2>
+  <p class="syl">Syllabus: transient and steady-state analysis of LTI systems.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>First order</b> \(\dfrac{K}{\tau s+1}\): step response \(K(1-e^{-t/\tau})\). It reaches 63.2 % of the final value at \(t=\tau\) and settles within 2 % in \(4\tau\).</li>
+    <li><b>Standard second order:</b> \(\dfrac{\omega_n^2}{s^2+2\zeta\omega_ns+\omega_n^2}\), with poles at \(-\zeta\omega_n\pm j\omega_n\sqrt{1-\zeta^2}\) when \(\zeta\lt1\). The damped frequency is \(\omega_d=\omega_n\sqrt{1-\zeta^2}\).</li>
+    <li><b>Step-response measures for \(0\lt\zeta\lt1\):</b> \[M_p=e^{-\pi\zeta/\sqrt{1-\zeta^2}},\qquad t_p=\frac{\pi}{\omega_d},\qquad t_r=\frac{\pi-\cos^{-1}\zeta}{\omega_d},\qquad t_s\approx\frac{4}{\zeta\omega_n}\ (2\,\%)\]</li>
+    <li>The overshoot depends only on \(\zeta\). Values worth remembering: \(\zeta=0.2\): 53 %. \(\zeta=0.5\): 16.3 %. \(\zeta=0.6\): 9.5 %. \(\zeta=0.707\): 4.3 %.</li>
+    <li>Lines of constant \(\zeta\) are rays from the origin at angle \(\cos^{-1}\zeta\) from the negative real axis. Constant \(\omega_n\) is a circle. Constant settling time is a vertical line.</li>
+    <li>An extra zero speeds up the response and raises the overshoot. An extra pole slows it down. A pole more than about five times further left than the dominant pair can be ignored.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Steady-state error, unity feedback</th><th>Step \(1/s\)</th><th>Ramp \(1/s^2\)</th><th>Parabola \(1/s^3\)</th></tr></thead>
+    <tbody>
+      <tr><td>Type 0</td><td>\(\dfrac{1}{1+K_p}\)</td><td>\(\infty\)</td><td>\(\infty\)</td></tr>
+      <tr><td>Type 1</td><td>0</td><td>\(\dfrac{1}{K_v}\)</td><td>\(\infty\)</td></tr>
+      <tr><td>Type 2</td><td>0</td><td>0</td><td>\(\dfrac{1}{K_a}\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Error constants: \(K_p=\lim_{s\to0}G(s)\), \(K_v=\lim_{s\to0}sG(s)\), \(K_a=\lim_{s\to0}s^2G(s)\). In general \(e_{ss}=\lim_{s\to0}\dfrac{sR(s)}{1+G(s)}\).</li>
+  </ul></div>
+  <div class="sim" data-sim="secondorder"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Push down on a car’s bonnet and let go. A good suspension (\(\zeta\) near 0.3 to 0.4 for comfort) rises, overshoots once and settles. Worn shock absorbers have a low \(\zeta\) and the car keeps bouncing. A door closer is tuned near critical damping so the door shuts quickly without slamming. A lift arriving at a floor must have no overshoot at all.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The formulas for \(M_p\), \(t_p\) and \(t_s\) apply only to the standard form with no zeros.</li>
+    <li>Type is counted from the open-loop \(G(s)H(s)\), not from the closed-loop transfer function.</li>
+    <li>The error table assumes the closed loop is stable. Check stability before quoting a steady-state error.</li>
+    <li>For non-unity feedback, convert to an equivalent unity-feedback system or use the error definition given in the question.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A unity-feedback system has \(G(s)=\dfrac{25}{s(s+6)}\). Find \(\zeta\), \(\omega_n\), the percentage overshoot, the 2 % settling time, and the steady-state error to a unit ramp.</summary><div class="sol">
+    <p>Characteristic equation \(s^2+6s+25=0\): \(\omega_n=5\text{ rad/s}\), \(\zeta=0.6\).</p>
+    <p>\(M_p=e^{-\pi(0.6)/0.8}=e^{-2.356}=9.5\,\%\). \(t_s=\dfrac{4}{0.6\times5}=1.33\text{ s}\).</p>
+    <p>Type 1 with \(K_v=25/6\): ramp error \(=6/25=0.24\). Set \(\zeta=0.6\), \(\omega_n=5\) in the simulation to check the first two results.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="c-stab">
+  <h2>Routh-Hurwitz and root locus</h2>
+  <p class="syl">Syllabus: Routh-Hurwitz stability criterion, root-locus plots.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A system is <b>stable</b> if every closed-loop pole has a negative real part. A necessary condition: every coefficient of the characteristic polynomial is present and has the same sign.</li>
+    <li><b>Routh array:</b> the number of sign changes in the first column equals the number of right-half-plane roots.</li>
+    <li><b>Special case 1:</b> a zero in the first column with other entries in that row non-zero. Replace it by a small \(\epsilon\gt0\) and continue.</li>
+    <li><b>Special case 2:</b> an entire row of zeros. The row above gives the auxiliary polynomial, whose roots are placed symmetrically about the origin (for example a pair on the \(j\omega\) axis). Replace the zero row by the derivative of the auxiliary polynomial and continue.</li>
+    <li><b>Shortcut for third order:</b> \(s^3+a_2s^2+a_1s+a_0\) is stable if all coefficients are positive and \(a_2a_1\gt a_0\). Equality means a pair of poles on the \(j\omega\) axis at \(\omega=\sqrt{a_1}\).</li>
+    <li><b>Root locus</b> of \(1+KG(s)H(s)=0\) for \(K\) from 0 to \(\infty\), with \(n\) open-loop poles and \(m\) zeros:
+      branches start at the open-loop poles and end at the zeros or at infinity.
+      On the real axis, the locus lies to the left of an odd number of real poles and zeros.
+      \(n-m\) branches go to infinity along asymptotes at angles \(\dfrac{(2q+1)180^\circ}{n-m}\) from the centroid \(\sigma=\dfrac{\sum\text{poles}-\sum\text{zeros}}{n-m}\).
+      Breakaway and break-in points satisfy \(\dfrac{dK}{ds}=0\).
+      The \(j\omega\)-axis crossing comes from the Routh array.</li>
+    <li><b>Angle condition:</b> \(\angle G(s)H(s)=\pm180^\circ(2q+1)\) at every point on the locus. <b>Magnitude condition:</b> \(K=\dfrac{\prod|s-p_i|}{\prod|s-z_i|}\) gives the gain at that point.</li>
+    <li><b>Angle of departure</b> from a complex pole: \(180^\circ-\sum(\text{angles from the other poles})+\sum(\text{angles from the zeros})\).</li>
+    <li>Adding an open-loop zero pulls the locus to the left and stabilises. Adding a pole pushes it to the right.</li>
+  </ul></div>
+  <div class="sim" data-sim="rootlocus"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Turn up the volume of a public-address system until it howls. Raising the gain \(K\) has moved a pair of closed-loop poles across the \(j\omega\) axis, and the howl is at the crossing frequency. A two-wheeled self-balancing scooter is the opposite case: the plant is unstable on its own, and feedback moves a right-half-plane pole into the left half.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Apply Routh to the closed-loop characteristic polynomial \(1+GH=0\), not to the denominator of \(G\).</li>
+    <li>The root locus is drawn from the open-loop poles and zeros but shows the closed-loop poles.</li>
+    <li>A solution of \(dK/ds=0\) is a breakaway point only if it lies on the locus.</li>
+    <li>The centroid uses the real parts only. Imaginary parts of conjugate pairs cancel.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>For \(G(s)H(s)=\dfrac{K}{s(s+1)(s+3)}\), find the range of \(K\) for stability, the frequency of oscillation at the limit, the asymptotes and the breakaway point.</summary><div class="sol">
+    <p>Characteristic equation \(s^3+4s^2+3s+K=0\). Stable for \(4\times3\gt K\), so \(0\lt K\lt12\). At \(K=12\): \(4s^2+12=0\), \(\omega=\sqrt3\text{ rad/s}\).</p>
+    <p>Three asymptotes at \(\pm60^\circ\) and \(180^\circ\) from the centroid \(\dfrac{0-1-3}{3}=-\dfrac43\).</p>
+    <p>\(K=-(s^3+4s^2+3s)\), so \(dK/ds=0\) gives \(3s^2+8s+3=0\): \(s=-0.451\) or \(-2.215\). Only \(-0.451\) is on the locus (between 0 and \(-1\)). The simulation opens on this system: slide \(K\) to 12.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="c-freq">
+  <h2>Bode, Nyquist and margins</h2>
+  <p class="syl">Syllabus: frequency response, Nyquist stability criterion, Bode plots.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Bode asymptotes:</b> each real pole adds a slope of −20 dB/decade above its corner frequency and a phase of −90° (−45° at the corner). Each real zero adds +20 dB/decade and +90°. The true curve is 3 dB from the asymptote at a first-order corner.</li>
+    <li>The low-frequency slope is \(-20N\) dB/decade for a type-\(N\) system. For type 1, the low-frequency asymptote (or its extension) crosses 0 dB at \(\omega=K_v\).</li>
+    <li><b>Second-order factor:</b> resonant peak \(M_r=\dfrac{1}{2\zeta\sqrt{1-\zeta^2}}\) at \(\omega_r=\omega_n\sqrt{1-2\zeta^2}\), which exists only for \(\zeta\lt0.707\).</li>
+    <li><b>Gain crossover</b> \(\omega_{gc}\): where \(|GH|=1\). <b>Phase crossover</b> \(\omega_{pc}\): where \(\angle GH=-180^\circ\).</li>
+    <li><b>Gain margin</b> \(=-20\log|GH(j\omega_{pc})|\) dB. <b>Phase margin</b> \(=180^\circ+\angle GH(j\omega_{gc})\). For a minimum-phase system, both positive means stable, which is the same as \(\omega_{gc}\lt\omega_{pc}\).</li>
+    <li>For a second-order system, \(PM\approx100\,\zeta\) degrees for \(\zeta\) below about 0.6.</li>
+    <li><b>Nyquist criterion:</b> let \(P\) be the number of open-loop poles in the right half-plane and \(N\) the number of counter-clockwise encirclements of \(-1+j0\) by the Nyquist plot of \(GH\). The number of closed-loop poles in the right half-plane is \(Z=P-N\). Stability needs \(Z=0\). For an open-loop stable system: no encirclement of \(-1\).</li>
+    <li><b>Polar plot shapes:</b> a type-0 plot starts on the positive real axis at \(K\). Type 1 starts at infinity along \(-90^\circ\). Type 2 starts at infinity along \(-180^\circ\). Each ends at the origin at an angle of \(-90^\circ\times(n-m)\).</li>
+    <li>A <b>pure delay</b> \(e^{-sT}\) has magnitude 1 and phase \(-\omega T\). It leaves the gain plot unchanged and eats phase margin.</li>
+    <li>For a <b>minimum-phase</b> system the phase curve is fixed by the magnitude curve. A slope of −20 dB/decade at gain crossover gives a healthy phase margin.</li>
+  </ul></div>
+  <div class="sim" data-sim="bode"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Adjusting a shower with a long pipe between the tap and the shower head is hard: you turn the tap, nothing happens for two seconds, you turn it more, and then it is scalding. The pipe is a pure delay, the delay has used up your phase margin, and the temperature oscillates. Every op-amp datasheet shows an open-loop Bode plot so that designers can read off the phase margin of their feedback circuit.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Gain and phase margins are read from the open-loop response \(GH\), and they describe the stability of the closed loop.</li>
+    <li>The simple rule “positive margins mean stable” can fail for systems with right-half-plane open-loop poles or zeros. Use the Nyquist count there.</li>
+    <li>Books differ on the sign convention for \(N\) (clockwise or counter-clockwise). Fix one and be consistent.</li>
+    <li>Decibels use \(20\log_{10}\) for gain ratios.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>For \(G(s)=\dfrac{K}{s(1+s)(1+s/2)}\) with unity feedback, find the phase crossover frequency, the gain margin when \(K=1\), and the largest stable \(K\).</summary><div class="sol">
+    <p>Phase \(=-90^\circ-\tan^{-1}\omega-\tan^{-1}(\omega/2)=-180^\circ\) when \(\tan^{-1}\omega+\tan^{-1}(\omega/2)=90^\circ\), which needs \(\omega\cdot\omega/2=1\): \(\omega_{pc}=\sqrt2\text{ rad/s}\).</p>
+    <p>\(|G(j\sqrt2)|=\dfrac{1}{\sqrt2\cdot\sqrt3\cdot\sqrt{1.5}}=\dfrac13\). Gain margin \(=20\log3=9.54\text{ dB}\). The loop is stable for \(K\lt3\).</p>
+    <p>In the simulation set \(K=1\), \(p_1=1\), \(p_2=2\), then raise \(K\) to 3.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="c-comp">
+  <h2>Compensators and PID</h2>
+  <p class="syl">Syllabus: compensators, PID controller.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Proportional (P):</b> a larger gain reduces steady-state error and speeds up the response, but reduces the stability margins.</li>
+    <li><b>Integral (I):</b> adds a pole at the origin, raising the system type by one, so the steady-state error to a step becomes zero. It adds −90° of phase, which slows the response and can destabilise.</li>
+    <li><b>Derivative (D):</b> adds a zero. It responds to the rate of change of the error, adds phase lead, improves damping, and amplifies high-frequency noise. It does nothing for a constant error.</li>
+    <li><b>PID:</b> \(G_c(s)=K_p+\dfrac{K_i}{s}+K_ds=K_p\left(1+\dfrac{1}{T_is}+T_ds\right)\). PI is \(\dfrac{K_p(s+K_i/K_p)}{s}\), a pole at the origin and a zero. PD is \(K_p+K_ds\), a single zero.</li>
+    <li><b>Lead compensator:</b> \(G_c(s)=\dfrac{1+sT}{1+\alpha sT}\) with \(\alpha\lt1\). The zero is nearer the origin than the pole. Maximum phase lead \(\phi_m\) with \(\sin\phi_m=\dfrac{1-\alpha}{1+\alpha}\) at \(\omega_m=\dfrac{1}{T\sqrt\alpha}\). It raises the phase margin and the bandwidth and behaves like PD.</li>
+    <li><b>Lag compensator:</b> \(G_c(s)=\dfrac{1+sT}{1+\beta sT}\) with \(\beta\gt1\). The pole is nearer the origin than the zero. It lets the low-frequency gain be raised, reducing steady-state error, lowers the bandwidth, and behaves like PI.</li>
+    <li><b>Lag–lead</b> combines the two: lag for steady-state accuracy, lead for transient response.</li>
+    <li><b>Ziegler–Nichols</b> (ultimate gain \(K_u\), oscillation period \(P_u\)): P: \(0.5K_u\). PI: \(0.45K_u\), \(T_i=P_u/1.2\). PID: \(0.6K_u\), \(T_i=P_u/2\), \(T_d=P_u/8\).</li>
+  </ul></div>
+  <div class="sim" data-sim="pid"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Most industrial control loops are PI or PID: the temperature of an oven or a chilled-water circuit, the speed of a motor drive, the pressure in an air line, each joint of a robot arm. A drone holds itself level with three PID loops running hundreds of times a second. The “disturbance” switch in the simulation is the same event as a cold part entering an oven or a load being applied to a motor.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Lead: zero closer to the origin. Lag: pole closer to the origin. Read the pole-zero positions, not the name in the question.</li>
+    <li>Derivative action does not reduce steady-state error.</li>
+    <li>Adding an integrator raises the type, but the closed loop must still be stable for the zero error to be reached.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A lead compensator has \(\alpha=\tfrac13\). Find the maximum phase lead it can provide.</summary><div class="sol">
+    <p>\(\sin\phi_m=\dfrac{1-1/3}{1+1/3}=0.5\), so \(\phi_m=30^\circ\).</p>
+  </div></details>
+  <details class="q"><summary>The plant \(\dfrac{1}{(s+1)(s+2)}\) is controlled by a proportional controller \(K_p=8\) with unity feedback. Find the steady-state error to a unit step. What does adding integral action do, and what limits \(K_i\)?</summary><div class="sol">
+    <p>Type 0 with position constant \(K_pG(0)=8\times\tfrac12=4\). Error \(=\dfrac{1}{1+4}=0.2\).</p>
+    <p>With integral action the type becomes 1 and the step error is zero. The characteristic equation becomes \(s^3+3s^2+(2+K_p)s+K_i=0\), which is stable only for \(K_i\lt3(2+K_p)=30\). Set \(K_p=8\) in the simulation, then raise \(K_i\) past 30.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="c-state">
+  <h2>State-variable model</h2>
+  <p class="syl">Syllabus: state variable model and solution of state equation of LTI systems.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>State model:</b> \(\dot{\mathbf x}=A\mathbf x+B\mathbf u\), \(\mathbf y=C\mathbf x+D\mathbf u\). The state is the smallest set of variables that, with the future input, determines the future output. Typical choices are capacitor voltages and inductor currents.</li>
+    <li><b>Transfer function:</b> \(G(s)=C(sI-A)^{-1}B+D\). The poles are the eigenvalues of \(A\), the roots of \(\det(sI-A)=0\).</li>
+    <li><b>State transition matrix:</b> \(\Phi(t)=e^{At}=\mathcal L^{-1}\{(sI-A)^{-1}\}\).</li>
+    <li>Properties: \(\Phi(0)=I\). \(\Phi^{-1}(t)=\Phi(-t)\). \(\Phi(t_1+t_2)=\Phi(t_1)\Phi(t_2)\). \([\Phi(t)]^k=\Phi(kt)\).</li>
+    <li><b>Complete solution:</b> \[\mathbf x(t)=\Phi(t)\,\mathbf x(0)+\int_0^t\Phi(t-\tau)\,B\,\mathbf u(\tau)\,d\tau\]</li>
+    <li><b>Controllable</b> if \(\operatorname{rank}\,[\,B\;\;AB\;\;\dots\;\;A^{n-1}B\,]=n\). <b>Observable</b> if \(\operatorname{rank}\begin{bmatrix}C\\CA\\\vdots\\CA^{n-1}\end{bmatrix}=n\).</li>
+    <li>A pole-zero cancellation in the transfer function means the system is uncontrollable or unobservable (or both) in that mode.</li>
+    <li>The state model of a system is not unique, but the eigenvalues of \(A\) and the transfer function are the same for every valid choice of state variables.</li>
+    <li>For \(G(s)=\dfrac{b_0}{s^n+a_{n-1}s^{n-1}+\dots+a_0}\), the controllable canonical form has 1s on the superdiagonal of \(A\), a last row \([-a_0\;-a_1\;\dots\;-a_{n-1}]\), \(B=[0\;\dots\;0\;1]^T\) and \(C=[b_0\;0\;\dots\;0]\).</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Aircraft autopilots, satellite attitude control and quadcopters have several inputs and outputs that interact, which transfer functions handle badly and state models handle naturally. The Kalman filter that merges GPS, accelerometer and gyroscope readings in a phone is a state estimator: it reconstructs states that cannot be measured directly, which is possible only because the system is observable.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Matrix order matters: \(C(sI-A)^{-1}B\), not any other order.</li>
+    <li>\(e^{At}\) is not the matrix of element-wise exponentials, except when \(A\) is diagonal.</li>
+    <li>The controllability matrix is built from columns. The observability matrix is built from rows.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>For \(A=\begin{bmatrix}0&amp;1\\-2&amp;-3\end{bmatrix}\), \(B=\begin{bmatrix}0\\1\end{bmatrix}\), \(C=\begin{bmatrix}1&amp;0\end{bmatrix}\): find the transfer function, check controllability, and find \(\Phi(t)\).</summary><div class="sol">
+    <p>\((sI-A)^{-1}=\dfrac{1}{(s+1)(s+2)}\begin{bmatrix}s+3&amp;1\\-2&amp;s\end{bmatrix}\). \(G(s)=\dfrac{1}{s^2+3s+2}\), with poles at \(-1\) and \(-2\).</p>
+    <p>\([B\;\;AB]=\begin{bmatrix}0&amp;1\\1&amp;-3\end{bmatrix}\) has determinant \(-1\), so the rank is 2 and the system is controllable.</p>
+    <p>\(\Phi(t)=\begin{bmatrix}2e^{-t}-e^{-2t}&amp;e^{-t}-e^{-2t}\\-2e^{-t}+2e^{-2t}&amp;-e^{-t}+2e^{-2t}\end{bmatrix}\). Check: \(\Phi(0)=I\). This is the plant used in the PID simulation above.</p>
+  </div></details>
+</section>

@@ -1,0 +1,213 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 8 · roughly 6 to 9 marks</p>
+  <h1>Electromagnetics</h1>
+  <p class="lede">Many candidates skip this section, which makes it a good place to gain rank. Transmission lines and plane waves supply most of the questions, and both reduce to a handful of formulas.</p>
+  <p class="ref"><b>Standard references:</b> Sadiku, <i>Elements of Electromagnetics</i>; Hayt and Buck, <i>Engineering Electromagnetics</i>; Pozar, <i>Microwave Engineering</i> (lines, S-parameters, waveguides); Balanis, <i>Antenna Theory</i>. <b>Constants:</b> \(\mu_0=4\pi\times10^{-7}\text{ H/m}\), \(\varepsilon_0=8.854\times10^{-12}\text{ F/m}\), \(c=3\times10^8\text{ m/s}\), \(\eta_0=120\pi\approx377\ \Omega\).</p>
+</header>
+
+<section class="topic" id="e-maxwell">
+  <h2>Maxwell’s equations</h2>
+  <p class="syl">Syllabus: differential and integral forms and their interpretation, boundary conditions, wave equation, Poynting vector.</p>
+  <div class="notes"><h3>Notes</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Law</th><th>Differential form</th><th>Integral form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Gauss (electric)</td><td>\(\nabla\cdot\mathbf D=\rho_v\)</td><td>\(\oint\mathbf D\cdot d\mathbf S=Q_{enc}\)</td><td>Electric flux begins and ends on charge.</td></tr>
+      <tr><td>Gauss (magnetic)</td><td>\(\nabla\cdot\mathbf B=0\)</td><td>\(\oint\mathbf B\cdot d\mathbf S=0\)</td><td>There are no magnetic charges. Magnetic field lines close on themselves.</td></tr>
+      <tr><td>Faraday</td><td>\(\nabla\times\mathbf E=-\dfrac{\partial\mathbf B}{\partial t}\)</td><td>\(\oint\mathbf E\cdot d\mathbf l=-\dfrac{d}{dt}\displaystyle\int\mathbf B\cdot d\mathbf S\)</td><td>A changing magnetic flux drives a circulating electric field.</td></tr>
+      <tr><td>Ampère–Maxwell</td><td>\(\nabla\times\mathbf H=\mathbf J+\dfrac{\partial\mathbf D}{\partial t}\)</td><td>\(\oint\mathbf H\cdot d\mathbf l=I+\dfrac{d}{dt}\displaystyle\int\mathbf D\cdot d\mathbf S\)</td><td>Current and changing electric flux (displacement current) both drive a circulating magnetic field.</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Material relations:</b> \(\mathbf D=\varepsilon\mathbf E\), \(\mathbf B=\mu\mathbf H\), \(\mathbf J=\sigma\mathbf E\). <b>Continuity of charge:</b> \(\nabla\cdot\mathbf J=-\dfrac{\partial\rho_v}{\partial t}\).</li>
+    <li><b>Phasor form:</b> \(\nabla\times\mathbf E=-j\omega\mu\mathbf H\) and \(\nabla\times\mathbf H=(\sigma+j\omega\varepsilon)\mathbf E\). The ratio of conduction to displacement current is the loss tangent \(\dfrac{\sigma}{\omega\varepsilon}\).</li>
+    <li><b>Boundary conditions</b> between media 1 and 2: tangential \(\mathbf E\) is continuous. Normal \(\mathbf B\) is continuous. Normal \(\mathbf D\) jumps by the surface charge, \(D_{n1}-D_{n2}=\rho_s\). Tangential \(\mathbf H\) jumps by the surface current, \(H_{t1}-H_{t2}=J_s\).</li>
+    <li>At a <b>perfect conductor</b>: \(E_t=0\) and \(B_n=0\) just outside. \(D_n=\rho_s\) and \(H_t=J_s\).</li>
+    <li>At a charge-free interface between dielectrics, field lines refract: \(\dfrac{\tan\theta_1}{\tan\theta_2}=\dfrac{\varepsilon_1}{\varepsilon_2}\), with angles measured from the normal.</li>
+    <li><b>Wave equation</b> in a source-free lossless medium: \(\nabla^2\mathbf E=\mu\varepsilon\dfrac{\partial^2\mathbf E}{\partial t^2}\). Speed \(v=\dfrac{1}{\sqrt{\mu\varepsilon}}\). Intrinsic impedance \(\eta=\sqrt{\dfrac\mu\varepsilon}=\dfrac{|\mathbf E|}{|\mathbf H|}\).</li>
+    <li><b>Poynting vector:</b> \(\mathbf S=\mathbf E\times\mathbf H\) in W/m², pointing in the direction of travel. Time average for phasors: \(\mathbf S_{av}=\tfrac12\operatorname{Re}(\mathbf E\times\mathbf H^*)\). For a plane wave in a lossless medium: \(S_{av}=\dfrac{E_0^2}{2\eta}\).</li>
+    <li><b>Stored energy densities:</b> \(\tfrac12\varepsilon E^2\) and \(\tfrac12\mu H^2\). Charge placed inside a conductor decays to the surface with the relaxation time \(\varepsilon/\sigma\).</li>
+  </ul></div>
+  <div class="sim" data-sim="planewave"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Alternating current “passes through” a capacitor although no charge crosses the gap: the displacement current \(\partial\mathbf D/\partial t\) completes the circuit. Faraday’s law runs every transformer and wireless charger, and induction heating, which hardens the surface of steel shafts and gears, uses it to drive currents in the workpiece itself. The metal mesh in a microwave oven door is a boundary condition: its holes are far smaller than the 12 cm wavelength, so to the microwaves it is a solid conductor.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Tangential \(\mathbf E\) is continuous, but tangential \(\mathbf D\) is not. Normal \(\mathbf D\) is continuous (without surface charge), but normal \(\mathbf E\) is not.</li>
+    <li>With peak amplitudes the average power density carries a factor \(\tfrac12\). With rms amplitudes it does not.</li>
+    <li>\(\eta\) depends on the medium: \(\eta=\eta_0\sqrt{\mu_r/\varepsilon_r}\).</li>
+    <li>The direction of travel is \(\mathbf E\times\mathbf H\), not \(\mathbf H\times\mathbf E\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A plane wave in free space has a peak electric field of 10 V/m. Find the peak magnetic field and the average power density.</summary><div class="sol">
+    <p>\(H_0=\dfrac{10}{377}=26.5\text{ mA/m}\). \(S_{av}=\dfrac{10^2}{2\times377}=0.133\text{ W/m}^2\).</p>
+  </div></details>
+  <details class="q"><summary>At a charge-free boundary between \(\varepsilon_{r1}=2\) and \(\varepsilon_{r2}=8\), the normal component of \(\mathbf E\) in medium 1 is 4 V/m. Find it in medium 2.</summary><div class="sol">
+    <p>Normal \(\mathbf D\) is continuous: \(2\times4=8\times E_{n2}\), so \(E_{n2}=1\text{ V/m}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="e-plane">
+  <h2>Plane waves</h2>
+  <p class="syl">Syllabus: reflection and refraction, polarization, phase and group velocity, propagation through various media, skin depth.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>General medium:</b> \(\gamma=\alpha+j\beta=\sqrt{j\omega\mu(\sigma+j\omega\varepsilon)}\) and \(\eta=\sqrt{\dfrac{j\omega\mu}{\sigma+j\omega\varepsilon}}\). The field is \(E_0\,e^{-\alpha z}\cos(\omega t-\beta z)\), with \(v_p=\dfrac\omega\beta\) and \(\lambda=\dfrac{2\pi}{\beta}\).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Medium</th><th>Condition</th><th>\(\alpha\)</th><th>\(\beta\)</th><th>\(\eta\)</th></tr></thead>
+    <tbody>
+      <tr><td>Lossless dielectric</td><td>\(\sigma=0\)</td><td>0</td><td>\(\omega\sqrt{\mu\varepsilon}\)</td><td>\(\sqrt{\mu/\varepsilon}\), real</td></tr>
+      <tr><td>Low-loss dielectric</td><td>\(\sigma\ll\omega\varepsilon\)</td><td>\(\dfrac\sigma2\sqrt{\dfrac\mu\varepsilon}\)</td><td>\(\approx\omega\sqrt{\mu\varepsilon}\)</td><td>\(\approx\sqrt{\mu/\varepsilon}\)</td></tr>
+      <tr><td>Good conductor</td><td>\(\sigma\gg\omega\varepsilon\)</td><td>\(\sqrt{\pi f\mu\sigma}\)</td><td>\(\sqrt{\pi f\mu\sigma}\)</td><td>\((1+j)\sqrt{\dfrac{\pi f\mu}{\sigma}}\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Skin depth</b> \(\delta=\dfrac1\alpha\). In a good conductor \(\delta=\dfrac{1}{\sqrt{\pi f\mu\sigma}}\), \(\lambda=2\pi\delta\), \(v_p=\omega\delta\), and \(\mathbf E\) leads \(\mathbf H\) by 45°. Surface resistance \(R_s=\dfrac{1}{\sigma\delta}\).</li>
+    <li><b>Normal incidence</b> from medium 1 to medium 2: \(\Gamma=\dfrac{\eta_2-\eta_1}{\eta_2+\eta_1}\), \(\tau=\dfrac{2\eta_2}{\eta_2+\eta_1}=1+\Gamma\). Fraction of power reflected \(|\Gamma|^2\), transmitted \(1-|\Gamma|^2\). At a perfect conductor \(\Gamma=-1\).</li>
+    <li><b>Oblique incidence</b> on non-magnetic dielectrics: Snell’s law \(n_1\sin\theta_i=n_2\sin\theta_t\) with \(n=\sqrt{\varepsilon_r}\).</li>
+    <li><b>Critical angle</b> (only from denser to rarer, \(n_1\gt n_2\)): \(\sin\theta_c=\dfrac{n_2}{n_1}\). Beyond it there is total internal reflection.</li>
+    <li><b>Brewster angle</b> (parallel polarization only): \(\tan\theta_B=\dfrac{n_2}{n_1}=\sqrt{\dfrac{\varepsilon_2}{\varepsilon_1}}\). The reflection vanishes.</li>
+    <li><b>Polarization</b> is the path traced by the tip of \(\mathbf E\). With components \(E_x\) and \(E_y\): linear if they are in phase or 180° apart. Circular if they have equal amplitude and are 90° apart. Elliptical otherwise.</li>
+    <li>For travel along \(+z\): \((\hat x-j\hat y)e^{-j\beta z}\) is right-hand circular and \((\hat x+j\hat y)e^{-j\beta z}\) is left-hand circular (IEEE convention: thumb along the direction of travel, fingers along the rotation).</li>
+    <li><b>Group velocity</b> \(v_g=\dfrac{d\omega}{d\beta}\) is the speed of the envelope and of the energy. In a non-dispersive medium \(v_g=v_p\).</li>
+    <li>A <b>quarter-wave layer</b> with \(\eta_2=\sqrt{\eta_1\eta_3}\) and thickness \(\lambda/4\) removes the reflection between media 1 and 3.</li>
+  </ul></div>
+  <div class="sim" data-sim="polarization"></div>
+  <div class="sim" data-sim="snell"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Polarized sunglasses work because sunlight reflected from a road or from water near the Brewster angle is mostly horizontally polarized, and the lenses block that direction. Submarines communicate at very low frequencies because the skin depth of sea water is only about 25 cm at 1 MHz and shrinks further as the frequency rises. In induction hardening, the same skin effect confines the heating current to a thin surface layer, and a higher frequency gives a shallower hardened case. GPS satellites transmit right-hand circular polarization so that the receiver’s orientation does not matter.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>In \(\delta\), use \(\mu=\mu_0\mu_r\). Steel has a much smaller skin depth than copper at the same frequency because of its large \(\mu_r\).</li>
+    <li>The Brewster angle exists only for parallel polarization (in non-magnetic media). Total internal reflection needs \(n_1\gt n_2\).</li>
+    <li>\(\Gamma\) is defined for the electric field. The magnetic field’s reflection coefficient has the opposite sign.</li>
+    <li>Handedness depends on the direction of travel. The same rotation is right-handed for \(+z\) and left-handed for \(-z\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Find the skin depth of copper (\(\sigma=5.8\times10^7\text{ S/m}\), \(\mu_r=1\)) at 1 MHz.</summary><div class="sol">
+    <p>\(\delta=\dfrac{1}{\sqrt{\pi\times10^6\times4\pi\times10^{-7}\times5.8\times10^7}}=\dfrac{1}{\sqrt{2.29\times10^8}}=6.6\times10^{-5}\text{ m}=66\ \mu\text{m}\). Select “Copper” at 1 MHz in the plane-wave simulation above to confirm.</p>
+  </div></details>
+  <details class="q"><summary>A wave in air strikes glass with \(\varepsilon_r=4\) at normal incidence. Find \(\Gamma\) and the fraction of power transmitted. What is the Brewster angle?</summary><div class="sol">
+    <p>\(\eta_2=\eta_0/2\). \(\Gamma=\dfrac{0.5-1}{0.5+1}=-\dfrac13\). Reflected power \(=\dfrac19=11.1\,\%\), transmitted \(=88.9\,\%\).</p>
+    <p>\(\theta_B=\tan^{-1}\sqrt4=63.4^\circ\). In the simulation set \(n_1=1\), \(n_2=2\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="e-tl">
+  <h2>Transmission lines</h2>
+  <p class="syl">Syllabus: equations, characteristic impedance, impedance matching, impedance transformation, S-parameters, Smith chart.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Line constants per unit length</b> \(R,L,G,C\): \(\gamma=\sqrt{(R+j\omega L)(G+j\omega C)}\) and \(Z_0=\sqrt{\dfrac{R+j\omega L}{G+j\omega C}}\).</li>
+    <li><b>Lossless line:</b> \(Z_0=\sqrt{\dfrac LC}\), \(\beta=\omega\sqrt{LC}\), \(v_p=\dfrac{1}{\sqrt{LC}}\). <b>Distortionless line:</b> \(\dfrac RL=\dfrac GC\), giving \(\alpha=\sqrt{RG}\) and the same \(Z_0\) and \(v_p\) as the lossless line.</li>
+    <li><b>Reflection coefficient</b> at the load: \(\Gamma_L=\dfrac{Z_L-Z_0}{Z_L+Z_0}\). At a distance \(d\) toward the generator: \(\Gamma(d)=\Gamma_L\,e^{-j2\beta d}\).</li>
+    <li>\(\text{VSWR}=\dfrac{1+|\Gamma|}{1-|\Gamma|}\). Return loss \(=-20\log|\Gamma|\) dB. Fraction of incident power delivered \(=1-|\Gamma|^2\).</li>
+    <li><b>Input impedance</b> of a lossless line of length \(d\): \[Z_{in}=Z_0\,\frac{Z_L+jZ_0\tan\beta d}{Z_0+jZ_L\tan\beta d}\]</li>
+    <li><b>Special cases:</b> shorted line \(jZ_0\tan\beta d\). Open line \(-jZ_0\cot\beta d\). Half-wave line \(Z_{in}=Z_L\). Quarter-wave line \(Z_{in}=\dfrac{Z_0^2}{Z_L}\). Also \(Z_0=\sqrt{Z_{sc}Z_{oc}}\).</li>
+    <li>Voltage maxima and minima are \(\lambda/4\) apart. At a maximum the line impedance is \(Z_0\cdot\text{VSWR}\). At a minimum it is \(Z_0/\text{VSWR}\). Both are purely real.</li>
+    <li><b>Matching:</b> a quarter-wave transformer with \(Z_0'=\sqrt{Z_0R_L}\) matches a real load. A single shunt stub is placed where the line admittance is \(Y_0+jB\), and the stub supplies \(-jB\).</li>
+    <li><b>Smith chart:</b> a plot of \(\Gamma\) with circles of constant normalised resistance and reactance. Centre: matched. Left end: short. Right end: open. Upper half: inductive. One full turn is \(\lambda/2\). Moving toward the generator is clockwise. The admittance is the diametrically opposite point.</li>
+    <li><b>S-parameters</b> relate reflected waves \(b\) to incident waves \(a\): \(b_1=S_{11}a_1+S_{12}a_2\), \(b_2=S_{21}a_1+S_{22}a_2\). \(S_{11}\) is the input reflection coefficient with port 2 matched. \(S_{21}\) is the forward transmission.</li>
+    <li>Reciprocal network: \(S_{12}=S_{21}\). Lossless network: \(S\) is unitary, for example \(|S_{11}|^2+|S_{21}|^2=1\). Return loss \(=-20\log|S_{11}|\). Insertion loss \(=-20\log|S_{21}|\).</li>
+  </ul></div>
+  <div class="sim" data-sim="standing"></div>
+  <div class="sim" data-sim="smith"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A CAN bus in a vehicle has a 120 Ω resistor at each end because the cable’s characteristic impedance is 120 Ω. Remove one and the edges of every bit reflect from the open end, which shows up as ringing and communication errors. Laboratory instruments use 50 Ω cable and television uses 75 Ω for the same reason. A time-domain reflectometer finds a cable fault by sending a pulse and timing the reflection from the break.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>In \(\tan\beta d\), \(\beta d=2\pi d/\lambda\) is in radians, and \(\lambda\) is the wavelength on the line, not in free space.</li>
+    <li>Normalise by \(Z_0\) before using the Smith chart and multiply back at the end.</li>
+    <li>\(\Gamma=-1\) for a short and \(+1\) for an open.</li>
+    <li>A quarter-wave transformer matches only at the frequency where it is a quarter wavelength long, and only real loads.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A 50 Ω line is terminated in 100 Ω. Find \(\Gamma\), the VSWR, the return loss, the fraction of power delivered, and the impedance of a quarter-wave matching section.</summary><div class="sol">
+    <p>\(\Gamma=\dfrac{100-50}{100+50}=\dfrac13\). \(\text{VSWR}=2\). Return loss \(=9.54\text{ dB}\). Power delivered \(=1-\dfrac19=88.9\,\%\).</p>
+    <p>\(Z_0'=\sqrt{50\times100}=70.7\ \Omega\). The standing-wave simulation opens with this load.</p>
+  </div></details>
+  <details class="q"><summary>A lossless 50 Ω line is terminated in \(Z_L=50+j50\ \Omega\). Find \(|\Gamma|\) and the VSWR.</summary><div class="sol">
+    <p>\(\Gamma=\dfrac{j50}{100+j50}=\dfrac{j}{2+j}=\dfrac{1+2j}{5}\). \(|\Gamma|=\dfrac{\sqrt5}{5}=0.447\).</p>
+    <p>\(\text{VSWR}=\dfrac{1.447}{0.553}=2.62\). In the Smith chart simulation set \(r=1\), \(x=1\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="e-wg">
+  <h2>Waveguides and optical fibres</h2>
+  <p class="syl">Syllabus: rectangular and circular waveguides, light propagation in optical fibers.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A hollow single-conductor guide cannot carry a TEM wave. It carries TE modes (no \(E\) along the axis) and TM modes (no \(H\) along the axis).</li>
+    <li><b>Rectangular guide</b> with inner dimensions \(a\gt b\): \[f_{c,mn}=\frac{c}{2\sqrt{\mu_r\varepsilon_r}}\sqrt{\left(\frac ma\right)^2+\left(\frac nb\right)^2}\] TE\(_{mn}\) needs \(m\) and \(n\) not both zero. TM\(_{mn}\) needs both at least 1.</li>
+    <li>The <b>dominant mode</b> is TE\(_{10}\): \(f_c=\dfrac{c}{2a}\), \(\lambda_c=2a\). The lowest TM mode is TM\(_{11}\). TE\(_{mn}\) and TM\(_{mn}\) with the same indices share a cut-off frequency (degenerate modes).</li>
+    <li><b>Above cut-off</b>, with \(F=\sqrt{1-(f_c/f)^2}\): \(\beta=\dfrac{\omega}{v}F\), \(\lambda_g=\dfrac{\lambda}{F}\), \(v_p=\dfrac vF\), \(v_g=vF\), so \(v_pv_g=v^2\). Below cut-off the field decays without propagating.</li>
+    <li><b>Wave impedances:</b> \(Z_{TE}=\dfrac\eta F\) and \(Z_{TM}=\eta F\).</li>
+    <li><b>Circular guide</b> of radius \(a\): the dominant mode is TE\(_{11}\) with \(f_c=\dfrac{1.841\,c}{2\pi a}\). Next is TM\(_{01}\) with \(\dfrac{2.405\,c}{2\pi a}\).</li>
+    <li><b>Optical fibre:</b> light is trapped in the core (index \(n_1\)) by total internal reflection at the cladding (\(n_2\lt n_1\)). <b>Numerical aperture:</b> \(NA=\sqrt{n_1^2-n_2^2}=\sin\theta_a\), where \(\theta_a\) is the largest acceptance angle in air.</li>
+    <li><b>V number:</b> \(V=\dfrac{2\pi a}{\lambda}NA\) for core radius \(a\). Single-mode operation needs \(V\lt2.405\). A step-index multimode fibre carries about \(V^2/2\) modes.</li>
+    <li><b>Dispersion</b> spreads pulses and limits the bit rate: intermodal (multimode fibres only), and chromatic (material plus waveguide). Silica fibre has near-zero dispersion around 1310 nm and its lowest loss, about 0.2 dB/km, around 1550 nm.</li>
+  </ul></div>
+  <div class="sim" data-sim="waveguide"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Drive into a tunnel and AM radio fades out while a mobile phone often keeps working. The tunnel is a large waveguide: AM wavelengths of hundreds of metres are far below its cut-off, and phone signals with wavelengths of a few tens of centimetres are far above it. Inside a microwave oven, a short rectangular waveguide carries 2.45 GHz from the magnetron to the cooking cavity. Home broadband fibre is single-mode fibre run at 1310 nm and 1490 or 1550 nm.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>\(a\) is the wider dimension. If the question gives the dimensions the other way round, the dominant mode is TE\(_{01}\).</li>
+    <li>TM\(_{10}\) and TM\(_{01}\) do not exist in a rectangular guide.</li>
+    <li>For a dielectric-filled guide, divide the air cut-off frequency by \(\sqrt{\varepsilon_r}\).</li>
+    <li>\(v_p\gt c\) is not a contradiction. Signals travel at \(v_g\lt c\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>An air-filled rectangular guide has \(a=2.286\text{ cm}\), \(b=1.016\text{ cm}\). Find the cut-off frequencies of TE\(_{10}\), TE\(_{20}\) and TE\(_{01}\), and the guide wavelength and group velocity at 10 GHz.</summary><div class="sol">
+    <p>\(f_{c10}=\dfrac{3\times10^8}{2\times0.02286}=6.56\text{ GHz}\). \(f_{c20}=13.12\text{ GHz}\). \(f_{c01}=\dfrac{3\times10^8}{2\times0.01016}=14.76\text{ GHz}\). Only TE\(_{10}\) propagates at 10 GHz.</p>
+    <p>\(F=\sqrt{1-(6.56/10)^2}=0.755\). \(\lambda=3\text{ cm}\), so \(\lambda_g=3.98\text{ cm}\). \(v_g=0.755\,c=2.26\times10^8\text{ m/s}\). These are the simulation’s default values.</p>
+  </div></details>
+  <details class="q"><summary>A step-index fibre has \(n_1=1.48\) and \(n_2=1.46\). Find the numerical aperture and the acceptance angle.</summary><div class="sol">
+    <p>\(NA=\sqrt{1.48^2-1.46^2}=\sqrt{0.0588}=0.2425\). \(\theta_a=\sin^{-1}0.2425=14.0^\circ\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="e-ant">
+  <h2>Antennas and arrays</h2>
+  <p class="syl">Syllabus: dipole and monopole antennas, linear antenna arrays.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Far field</b> begins at about \(r\gt\dfrac{2D^2}{\lambda}\) for an antenna of largest dimension \(D\). There the fields fall as \(1/r\), \(\mathbf E\) and \(\mathbf H\) are perpendicular to each other and to the radial direction, and \(E/H=\eta\).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Antenna</th><th>Radiation resistance</th><th>Directivity</th><th>Half-power beamwidth</th></tr></thead>
+    <tbody>
+      <tr><td>Hertzian dipole, length \(dl\ll\lambda\)</td><td>\(80\pi^2\left(\dfrac{dl}{\lambda}\right)^2\ \Omega\)</td><td>1.5 (1.76 dBi)</td><td>90°</td></tr>
+      <tr><td>Half-wave dipole</td><td>73 Ω</td><td>1.64 (2.15 dBi)</td><td>78°</td></tr>
+      <tr><td>Quarter-wave monopole on a ground plane</td><td>36.5 Ω</td><td>3.28 (5.15 dBi)</td><td>39° (above the plane)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>The pattern of a short dipole is \(\sin\theta\): no radiation along its axis, maximum broadside to it.</li>
+    <li><b>Directivity</b> \(D=\dfrac{4\pi U_{max}}{P_{rad}}\). <b>Gain</b> \(G=e\,D\), with radiation efficiency \(e=\dfrac{R_{rad}}{R_{rad}+R_{loss}}\). <b>Effective aperture</b> \(A_e=\dfrac{\lambda^2}{4\pi}G\).</li>
+    <li><b>Friis equation</b> for a free-space link: \[P_r=P_tG_tG_r\left(\frac{\lambda}{4\pi R}\right)^2\] The product \(P_tG_t\) is the EIRP.</li>
+    <li><b>Array of identical elements:</b> total pattern = element pattern × array factor (pattern multiplication).</li>
+    <li><b>Uniform linear array</b> of \(N\) elements, spacing \(d\), progressive phase \(\alpha\), with \(\theta\) measured from the array axis: \[|AF|=\left|\frac{\sin(N\psi/2)}{N\sin(\psi/2)}\right|,\qquad\psi=\beta d\cos\theta+\alpha\]</li>
+    <li><b>Broadside:</b> \(\alpha=0\), maximum at \(\theta=90^\circ\). <b>End-fire:</b> \(\alpha=\mp\beta d\), maximum at \(\theta=0^\circ\) or \(180^\circ\). In general the beam points where \(\cos\theta_0=-\dfrac{\alpha}{\beta d}\).</li>
+    <li>Nulls occur where \(\dfrac{N\psi}{2}=\pm k\pi\) (but not where \(\psi\) is a multiple of \(2\pi\)). First-null beamwidth of a broadside array \(\approx\dfrac{2\lambda}{Nd}\) rad for a long array.</li>
+    <li><b>Grating lobes</b> (extra full-strength beams) are avoided by keeping \(d\lt\lambda\) for a broadside array and \(d\lt\lambda/2\) for an array that scans to end-fire.</li>
+  </ul></div>
+  <div class="sim" data-sim="array"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The whip or “shark fin” on a car roof is a quarter-wave monopole, and the metal roof is its ground plane. A broadcast FM whip is about 75 cm long because a quarter of the 3 m wavelength at 100 MHz is 75 cm. A 5G base station and a modern Wi-Fi router steer their beams toward each user by changing the phase step \(\alpha\) between antenna elements, with no moving parts.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>A monopole has half the radiation resistance and twice the directivity of the corresponding dipole, because it radiates the same pattern into half the space.</li>
+    <li>dBi is gain over an isotropic radiator. dBd is gain over a half-wave dipole. They differ by 2.15 dB.</li>
+    <li>Check whether \(\theta\) is measured from the array axis or from broadside before using the array factor.</li>
+    <li>The Friis equation needs both antennas in each other’s far field, and gains as ratios, not in dB.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Find the lengths of a half-wave dipole and a quarter-wave monopole for 100 MHz.</summary><div class="sol">
+    <p>\(\lambda=\dfrac{3\times10^8}{10^8}=3\text{ m}\). Dipole: 1.5 m. Monopole: 0.75 m.</p>
+  </div></details>
+  <details class="q"><summary>A 1 GHz link has \(P_t=10\text{ W}\), \(G_t=G_r=10\), and a range of 1 km. Find the received power.</summary><div class="sol">
+    <p>\(\lambda=0.3\text{ m}\). \(\dfrac{\lambda}{4\pi R}=\dfrac{0.3}{12\,566}=2.39\times10^{-5}\).</p>
+    <p>\(P_r=10\times10\times10\times(2.39\times10^{-5})^2=5.7\times10^{-7}\text{ W}=0.57\ \mu\text{W}\).</p>
+  </div></details>
+  <details class="q"><summary>A 4-element broadside array has half-wavelength spacing. Find the directions of its nulls.</summary><div class="sol">
+    <p>\(\psi=\pi\cos\theta\). Nulls where \(2\psi=\pm\pi,\pm2\pi\), so \(\cos\theta=\pm\tfrac12\) or \(\pm1\): \(\theta=0^\circ,\,60^\circ,\,120^\circ,\,180^\circ\). This is the simulation’s opening pattern.</p>
+  </div></details>
+</section>

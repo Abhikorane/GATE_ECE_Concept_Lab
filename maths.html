@@ -1,0 +1,207 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 1 · about 13 marks</p>
+  <h1>Engineering Mathematics</h1>
+  <p class="lede">The most predictable marks in the paper. The questions are short, the syllabus is fixed, and every other section borrows these tools.</p>
+  <p class="ref"><b>Standard references:</b> Kreyszig, <i>Advanced Engineering Mathematics</i>; B. S. Grewal, <i>Higher Engineering Mathematics</i>.</p>
+</header>
+
+<section class="topic" id="m-linalg">
+  <h2>Linear algebra</h2>
+  <p class="syl">Syllabus: vector space, basis, linear dependence and independence, matrix algebra, eigenvalues and eigenvectors, rank, solution of linear equations (existence and uniqueness).</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Rank</b> is the number of linearly independent rows, which equals the number of independent columns and the number of non-zero rows in echelon form. \(\operatorname{rank}(AB)\le\min(\operatorname{rank}A,\operatorname{rank}B)\).</li>
+    <li><b>Basis and dimension.</b> A basis is a linearly independent set that spans the space. Every basis of a space has the same number of vectors, called the dimension. For an \(m\times n\) matrix: rank + nullity = \(n\).</li>
+    <li><b>System \(Ax=b\) with \(n\) unknowns.</b> Let \(r=\operatorname{rank}(A)\) and \(r'=\operatorname{rank}([A\,|\,b])\). If \(r\lt r'\): no solution. If \(r=r'=n\): unique solution. If \(r=r'\lt n\): infinitely many solutions with \(n-r\) free variables.</li>
+    <li><b>Homogeneous system \(Ax=0\)</b> always has \(x=0\). A non-zero solution exists only if \(\operatorname{rank}(A)\lt n\), which for a square matrix means \(\det A=0\).</li>
+    <li><b>Eigenvalues</b> solve \(\det(A-\lambda I)=0\). Their sum is the trace and their product is the determinant.</li>
+    <li>If \(A\) has eigenvalue \(\lambda\) with eigenvector \(v\), then \(A^k\) has \(\lambda^k\), \(A^{-1}\) has \(1/\lambda\), \(A+cI\) has \(\lambda+c\), and \(kA\) has \(k\lambda\), all with the same \(v\). \(A\) and \(A^T\) have the same eigenvalues.</li>
+    <li><b>Special matrices.</b> Real symmetric: real eigenvalues, orthogonal eigenvectors. Skew-symmetric: eigenvalues zero or purely imaginary. Orthogonal: \(|\lambda|=1\). Triangular or diagonal: the eigenvalues are the diagonal entries.</li>
+    <li><b>Cayley–Hamilton.</b> Every square matrix satisfies its own characteristic equation. Use it to write \(A^{-1}\) or a high power of \(A\) as a polynomial in \(A\).</li>
+    <li>\(\det(kA)=k^n\det A\) for an \(n\times n\) matrix, and \(\det(AB)=\det A\,\det B\).</li>
+  </ul></div>
+  <div class="sim" data-sim="eigen"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The natural vibration frequencies of a structure, such as a bridge deck or a machine frame, are eigenvalues of its stiffness and mass matrices, and each eigenvector is the shape of one vibration mode. Search engines rank pages using the dominant eigenvector of a huge link matrix. In control systems the eigenvalues of the state matrix are the poles of the system.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>A repeated eigenvalue does not guarantee enough independent eigenvectors. \(\begin{bmatrix}1&amp;1\\0&amp;1\end{bmatrix}\) has \(\lambda=1\) twice but only one eigenvector direction.</li>
+    <li>A matrix whose rows are all multiples of one row has rank 1. Its eigenvalues are 0 (repeated \(n-1\) times) and the trace.</li>
+    <li>Eigenvectors belonging to different eigenvalues are independent, but they are orthogonal only for symmetric (or more generally normal) matrices.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Find the eigenvalues and eigenvectors of \(A=\begin{bmatrix}2&amp;1\\1&amp;2\end{bmatrix}\).</summary><div class="sol">
+    <p>\(\lambda^2-4\lambda+3=0\), so \(\lambda=3\) and \(\lambda=1\). Check: sum 4 = trace, product 3 = determinant.</p>
+    <p>For \(\lambda=3\): \((A-3I)v=0\) gives \(v=(1,1)\). For \(\lambda=1\): \(v=(1,-1)\). They are perpendicular, as expected for a symmetric matrix. These are the default values in the simulation above.</p>
+  </div></details>
+  <details class="q"><summary>A \(3\times3\) matrix \(A\) has eigenvalues 1, 2 and 4. Find \(\det(A^{-1})\) and the trace of \(A^2+I\).</summary><div class="sol">
+    <p>\(\det A=1\cdot2\cdot4=8\), so \(\det(A^{-1})=1/8\).</p>
+    <p>\(A^2+I\) has eigenvalues \(1+1,\;4+1,\;16+1\). Trace \(=2+5+17=24\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="m-calc">
+  <h2>Calculus</h2>
+  <p class="syl">Syllabus: mean value theorems, theorems of integral calculus, definite and improper integrals, partial derivatives, maxima and minima, multiple integrals, line, surface and volume integrals, Taylor series.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Mean value theorems.</b> Rolle: if \(f(a)=f(b)\) then \(f'(c)=0\) for some \(c\) in \((a,b)\). Lagrange: \(f'(c)=\dfrac{f(b)-f(a)}{b-a}\). Cauchy: \(\dfrac{f'(c)}{g'(c)}=\dfrac{f(b)-f(a)}{g(b)-g(a)}\). All need continuity on \([a,b]\) and differentiability on \((a,b)\).</li>
+    <li><b>Taylor series</b> about \(x=a\): \[f(x)=\sum_{n=0}^{\infty}\frac{f^{(n)}(a)}{n!}(x-a)^n\]</li>
+    <li>Series to know by heart: \(e^x=1+x+\frac{x^2}{2!}+\dots\), \(\sin x=x-\frac{x^3}{3!}+\dots\), \(\cos x=1-\frac{x^2}{2!}+\dots\), \(\ln(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}-\dots\) and \(\frac{1}{1-x}=1+x+x^2+\dots\) (the last two only for \(|x|\lt1\)).</li>
+    <li><b>Maxima and minima, one variable:</b> \(f'=0\), then \(f''\gt0\) is a minimum and \(f''\lt0\) a maximum. On a closed interval also check the end points.</li>
+    <li><b>Two variables:</b> at a point where \(f_x=f_y=0\), let \(r=f_{xx},\;s=f_{xy},\;t=f_{yy}\). If \(rt-s^2\gt0\): minimum when \(r\gt0\), maximum when \(r\lt0\). If \(rt-s^2\lt0\): saddle point. If zero: no conclusion.</li>
+    <li><b>Definite integral properties:</b> \(\int_0^a f(x)\,dx=\int_0^a f(a-x)\,dx\). Over \([-a,a]\) an odd function integrates to 0 and an even function to twice the half-range integral.</li>
+    <li><b>Improper integrals:</b> \(\int_1^\infty \frac{dx}{x^p}\) converges only if \(p\gt1\). \(\int_0^1\frac{dx}{x^p}\) converges only if \(p\lt1\). Also \(\int_0^\infty e^{-x^2}dx=\frac{\sqrt\pi}{2}\), \(\Gamma(n+1)=n!\) and \(\Gamma(\tfrac12)=\sqrt\pi\).</li>
+    <li><b>Multiple integrals:</b> polar \(dA=r\,dr\,d\theta\). Cylindrical \(dV=r\,dr\,d\theta\,dz\). Spherical \(dV=r^2\sin\theta\,dr\,d\theta\,d\phi\). A change of variables multiplies by the absolute value of the Jacobian.</li>
+    <li><b>Leibniz rule:</b> \(\dfrac{d}{dx}\displaystyle\int_{u(x)}^{v(x)}f(t)\,dt=f(v)\,v'-f(u)\,u'\).</li>
+  </ul></div>
+  <div class="sim" data-sim="taylor"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Small-signal analysis of every transistor amplifier is a first-order Taylor expansion of the device equation around the bias point: \(g_m\) is simply the first derivative there. A pendulum clock, a pocket calculator computing \(\sin x\), and the phrase “for small angles \(\sin\theta\approx\theta\)” all use the first one or two Taylor terms.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>L’Hôpital’s rule applies only to \(0/0\) or \(\infty/\infty\) forms. Check the form before differentiating.</li>
+    <li>A power series is valid only inside its radius of convergence. \(\ln(1+x)\) at \(x=2\) cannot be computed from its Maclaurin series.</li>
+    <li>\(f'(c)=0\) is necessary, not sufficient: \(f(x)=x^3\) at 0 is neither a maximum nor a minimum.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Evaluate \(\displaystyle\lim_{x\to0}\frac{1-\cos x}{x^2}\).</summary><div class="sol">
+    <p>Use \(\cos x=1-\frac{x^2}{2}+\frac{x^4}{24}-\dots\). The numerator is \(\frac{x^2}{2}-\dots\), so the limit is \(\tfrac12\).</p>
+  </div></details>
+  <details class="q"><summary>Evaluate \(I=\displaystyle\int_0^{\pi/2}\frac{\sin x}{\sin x+\cos x}\,dx\).</summary><div class="sol">
+    <p>Replace \(x\) by \(\frac{\pi}{2}-x\): \(I=\int_0^{\pi/2}\frac{\cos x}{\cos x+\sin x}\,dx\). Adding the two forms gives \(2I=\int_0^{\pi/2}1\,dx=\frac{\pi}{2}\), so \(I=\frac{\pi}{4}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="m-de">
+  <h2>Differential equations</h2>
+  <p class="syl">Syllabus: linear differential equations, Euler–Cauchy equation, non-homogeneous equations, variation of parameters, complementary function and particular integral, partial differential equations, variable separable method, initial and boundary value problems.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>First-order linear</b> \(y'+P(x)y=Q(x)\): integrating factor \(\mu=e^{\int P\,dx}\), then \(y\,\mu=\int Q\,\mu\,dx+C\).</li>
+    <li><b>Other first-order types:</b> separable; homogeneous (substitute \(y=vx\)); exact when \(\partial M/\partial y=\partial N/\partial x\) for \(M\,dx+N\,dy=0\).</li>
+    <li><b>Constant coefficients, complementary function</b> from the roots of the auxiliary equation: real and distinct \(m_1,m_2\): \(C_1e^{m_1x}+C_2e^{m_2x}\). Repeated \(m\): \((C_1+C_2x)e^{mx}\). Complex \(\alpha\pm j\beta\): \(e^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)\).</li>
+    <li><b>Particular integral</b> for \(f(D)y=X\): for \(X=e^{ax}\), \(y_p=\dfrac{e^{ax}}{f(a)}\), and if \(f(a)=0\) use \(\dfrac{x\,e^{ax}}{f'(a)}\). For \(\sin ax\) or \(\cos ax\), replace \(D^2\) by \(-a^2\). For a polynomial, expand \(1/f(D)\) in rising powers of \(D\). For \(e^{ax}V(x)\): \(e^{ax}\dfrac{1}{f(D+a)}V\).</li>
+    <li><b>Variation of parameters</b> for \(y''+Py'+Qy=R\) with independent solutions \(y_1,y_2\) and Wronskian \(W=y_1y_2'-y_2y_1'\): \[y_p=-y_1\int\frac{y_2R}{W}\,dx+y_2\int\frac{y_1R}{W}\,dx\]</li>
+    <li><b>Euler–Cauchy</b> \(x^2y''+axy'+by=0\): try \(y=x^m\) to get \(m(m-1)+am+b=0\). Repeated root: \((C_1+C_2\ln x)x^m\). Complex \(\alpha\pm j\beta\): \(x^\alpha[C_1\cos(\beta\ln x)+C_2\sin(\beta\ln x)]\).</li>
+    <li><b>Partial differential equations by separation of variables:</b> put \(u(x,t)=X(x)T(t)\). Heat: \(u_t=c^2u_{xx}\). Wave: \(u_{tt}=c^2u_{xx}\). Laplace: \(u_{xx}+u_{yy}=0\).</li>
+    <li><b>Classification</b> of \(Au_{xx}+Bu_{xy}+Cu_{yy}+\dots=0\): \(B^2-4AC\lt0\) elliptic (Laplace), \(=0\) parabolic (heat), \(\gt0\) hyperbolic (wave).</li>
+    <li>An <b>initial value problem</b> gives all conditions at one point. A <b>boundary value problem</b> gives them at two or more points, and may have no solution, one, or infinitely many.</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A series RLC circuit, a car’s spring and shock absorber, and a swinging door with a closer all obey the same second-order equation, so they share the same overdamped, critical and underdamped behaviour. The simulation in <a href="#networks-signals">Networks, Signals and Systems</a> under “Transients” shows all three cases. The heat equation describes how a soldered joint cools, and the wave equation describes a pulse travelling down a cable.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>When the forcing term matches a root of the auxiliary equation (resonance), the usual guess fails. Multiply by \(x\).</li>
+    <li>Order is the highest derivative. Degree is the power of that highest derivative after clearing radicals and fractions.</li>
+    <li>For Euler–Cauchy equations the repeated-root solution uses \(\ln x\), not \(x\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Solve \(y''+4y'+4y=0\) with \(y(0)=1,\;y'(0)=0\).</summary><div class="sol">
+    <p>Auxiliary equation \((m+2)^2=0\), so \(y=(C_1+C_2x)e^{-2x}\). From \(y(0)=1\): \(C_1=1\). From \(y'(0)=C_2-2C_1=0\): \(C_2=2\).</p>
+    <p>\(y=(1+2x)e^{-2x}\). This is the critically damped case.</p>
+  </div></details>
+  <details class="q"><summary>Solve \(x^2y''-2xy'+2y=0\).</summary><div class="sol">
+    <p>Try \(y=x^m\): \(m(m-1)-2m+2=0\), so \(m^2-3m+2=0\) and \(m=1,2\). Therefore \(y=C_1x+C_2x^2\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="m-vec">
+  <h2>Vector analysis</h2>
+  <p class="syl">Syllabus: vectors in plane and space, vector operations, gradient, divergence and curl, Gauss’s, Green’s and Stokes’ theorems.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Gradient</b> \(\nabla f\) points in the direction of fastest increase of \(f\), with magnitude equal to that rate. The directional derivative along a unit vector \(\hat a\) is \(\nabla f\cdot\hat a\). \(\nabla f\) is normal to the surface \(f=\text{constant}\).</li>
+    <li><b>Divergence</b> \(\nabla\cdot\mathbf F=\dfrac{\partial F_x}{\partial x}+\dfrac{\partial F_y}{\partial y}+\dfrac{\partial F_z}{\partial z}\) measures net outflow per unit volume. <b>Curl</b> \(\nabla\times\mathbf F\) measures circulation per unit area.</li>
+    <li><b>Two identities that are always true:</b> \(\nabla\times(\nabla f)=0\) and \(\nabla\cdot(\nabla\times\mathbf F)=0\).</li>
+    <li>\(\mathbf F\) is <b>solenoidal</b> if \(\nabla\cdot\mathbf F=0\) and <b>irrotational</b> (conservative) if \(\nabla\times\mathbf F=0\). A conservative field is a gradient, \(\mathbf F=\nabla\phi\), and its line integral depends only on the end points.</li>
+    <li><b>Gauss divergence theorem:</b> \(\displaystyle\oint_S\mathbf F\cdot d\mathbf S=\int_V\nabla\cdot\mathbf F\,dV\) for a closed surface with outward normal.</li>
+    <li><b>Stokes’ theorem:</b> \(\displaystyle\oint_C\mathbf F\cdot d\mathbf l=\int_S(\nabla\times\mathbf F)\cdot d\mathbf S\), with the curve direction and the surface normal related by the right-hand rule.</li>
+    <li><b>Green’s theorem</b> (Stokes in the plane): \(\displaystyle\oint_C(M\,dx+N\,dy)=\iint_R\left(\frac{\partial N}{\partial x}-\frac{\partial M}{\partial y}\right)dx\,dy\), with \(C\) counter-clockwise. Area: \(\tfrac12\oint(x\,dy-y\,dx)\).</li>
+    <li>For the position vector \(\mathbf r\) with \(r=|\mathbf r|\): \(\nabla\cdot\mathbf r=3\), \(\nabla\times\mathbf r=0\), \(\nabla r=\hat r\), \(\nabla(1/r)=-\hat r/r^2\).</li>
+  </ul></div>
+  <div class="sim" data-sim="vfield"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Maxwell’s equations are these operators applied to fields. Electric field lines begin on charge, which is divergence. Magnetic field lines never begin or end, so \(\nabla\cdot\mathbf B=0\). Current makes the magnetic field circulate around it, which is curl. Weather maps use the same two quantities for wind: convergence and vorticity.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Green’s theorem needs a closed curve traversed counter-clockwise. A clockwise curve flips the sign.</li>
+    <li>The divergence theorem needs a closed surface. If a face is missing, close the surface and subtract that face’s flux.</li>
+    <li>Straight flow lines do not mean zero curl. See “Shear flow” in the simulation.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Find the flux of \(\mathbf F=x\hat\imath+y\hat\jmath+z\hat k\) out of the unit sphere.</summary><div class="sol">
+    <p>\(\nabla\cdot\mathbf F=3\). By the divergence theorem the flux is \(3\times\) volume \(=3\cdot\frac{4}{3}\pi=4\pi\).</p>
+  </div></details>
+  <details class="q"><summary>Evaluate \(\displaystyle\oint_C(y\,dx-x\,dy)\) counter-clockwise around the unit circle.</summary><div class="sol">
+    <p>Here \(M=y,\;N=-x\). Green: \(\iint(\partial N/\partial x-\partial M/\partial y)\,dA=\iint(-1-1)\,dA=-2\pi\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="m-complex">
+  <h2>Complex analysis</h2>
+  <p class="syl">Syllabus: analytic functions, Cauchy’s integral theorem, Cauchy’s integral formula, sequences, series, convergence tests, Taylor and Laurent series, residue theorem.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Analytic function.</b> \(f=u+jv\) is analytic where the Cauchy–Riemann equations hold with continuous partial derivatives: \(u_x=v_y\) and \(u_y=-v_x\). Then \(u\) and \(v\) are both harmonic: \(\nabla^2u=\nabla^2v=0\).</li>
+    <li><b>Cauchy’s integral theorem:</b> \(\oint_Cf(z)\,dz=0\) if \(f\) is analytic on and inside \(C\).</li>
+    <li><b>Cauchy’s integral formula</b> for \(a\) inside \(C\): \[f(a)=\frac{1}{2\pi j}\oint_C\frac{f(z)}{z-a}\,dz,\qquad f^{(n)}(a)=\frac{n!}{2\pi j}\oint_C\frac{f(z)}{(z-a)^{n+1}}\,dz\]</li>
+    <li><b>Laurent series</b> in an annulus around \(a\): \(f(z)=\sum_{n=-\infty}^{\infty}c_n(z-a)^n\). The negative powers form the principal part. No negative powers: removable singularity. Finitely many: a pole whose order is the highest negative power. Infinitely many: essential singularity, for example \(e^{1/z}\) at 0.</li>
+    <li><b>Residue</b> is the coefficient \(c_{-1}\). Simple pole: \(\lim_{z\to a}(z-a)f(z)\). For \(f=P/Q\) with a simple zero of \(Q\): \(P(a)/Q'(a)\). Pole of order \(m\): \[\frac{1}{(m-1)!}\lim_{z\to a}\frac{d^{m-1}}{dz^{m-1}}\big[(z-a)^mf(z)\big]\]</li>
+    <li><b>Residue theorem:</b> \(\oint_Cf(z)\,dz=2\pi j\sum\)(residues at the poles inside \(C\)), with \(C\) counter-clockwise.</li>
+    <li><b>Series convergence.</b> Ratio test: \(L=\lim|a_{n+1}/a_n|\), converges if \(L\lt1\), diverges if \(L\gt1\). \(\sum1/n^p\) converges only for \(p\gt1\). An alternating series converges if its terms decrease to zero. Radius of convergence of a power series: \(R=\lim|a_n/a_{n+1}|\).</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The partial-fraction method you use for inverse Laplace and inverse z-transforms is the residue theorem in disguise: each partial-fraction coefficient is a residue. The Nyquist stability criterion counts encirclements using the argument principle from this chapter. The Smith chart is a bilinear (Möbius) mapping of the impedance plane onto the unit disc.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Only poles inside the contour count. First check each pole’s distance from the centre against the radius.</li>
+    <li>A clockwise contour gives the negative of the residue-theorem result.</li>
+    <li>\(\frac{\sin z}{z}\) at \(z=0\) is a removable singularity, not a pole. Its residue is 0.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Evaluate \(\displaystyle\oint_{|z|=2}\frac{dz}{(z-1)(z-3)}\), counter-clockwise.</summary><div class="sol">
+    <p>Only \(z=1\) is inside. Residue there \(=\dfrac{1}{1-3}=-\dfrac12\). Integral \(=2\pi j\cdot(-\tfrac12)=-\pi j\).</p>
+  </div></details>
+  <details class="q"><summary>Find the residue of \(\dfrac{e^z}{z^3}\) at \(z=0\).</summary><div class="sol">
+    <p>\(\dfrac{e^z}{z^3}=\dfrac{1}{z^3}+\dfrac{1}{z^2}+\dfrac{1}{2z}+\dots\). The coefficient of \(1/z\) is \(\tfrac12\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="m-prob">
+  <h2>Probability and statistics</h2>
+  <p class="syl">Syllabus: mean, median, mode, standard deviation, combinatorial probability, probability distributions (binomial, Poisson, exponential, normal), joint and conditional probability, correlation and regression analysis.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\). Conditional: \(P(A|B)=\dfrac{P(A\cap B)}{P(B)}\). Independent events: \(P(A\cap B)=P(A)P(B)\).</li>
+    <li><b>Total probability and Bayes:</b> \(P(B)=\sum_iP(B|A_i)P(A_i)\) and \(P(A_k|B)=\dfrac{P(B|A_k)P(A_k)}{P(B)}\).</li>
+    <li>\(E[aX+b]=aE[X]+b\). \(\operatorname{Var}(X)=E[X^2]-(E[X])^2\). \(\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X)\). \(\operatorname{Var}(X\pm Y)=\operatorname{Var}X+\operatorname{Var}Y\pm2\operatorname{Cov}(X,Y)\).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Distribution</th><th>Formula</th><th>Mean</th><th>Variance</th></tr></thead>
+    <tbody>
+      <tr><td>Binomial \((n,p)\)</td><td>\(\binom{n}{k}p^kq^{n-k}\)</td><td>\(np\)</td><td>\(npq\)</td></tr>
+      <tr><td>Poisson \((\lambda)\)</td><td>\(e^{-\lambda}\lambda^k/k!\)</td><td>\(\lambda\)</td><td>\(\lambda\)</td></tr>
+      <tr><td>Exponential \((\lambda)\)</td><td>\(\lambda e^{-\lambda x},\;x\ge0\)</td><td>\(1/\lambda\)</td><td>\(1/\lambda^2\)</td></tr>
+      <tr><td>Uniform \((a,b)\)</td><td>\(1/(b-a)\)</td><td>\((a+b)/2\)</td><td>\((b-a)^2/12\)</td></tr>
+      <tr><td>Normal \((\mu,\sigma^2)\)</td><td>\(\frac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/2\sigma^2}\)</td><td>\(\mu\)</td><td>\(\sigma^2\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Normal: about 68 %, 95 % and 99.7 % of the area lies within 1, 2 and 3 standard deviations of the mean. Standardise with \(z=(x-\mu)/\sigma\).</li>
+    <li>The exponential distribution is memoryless: \(P(X\gt s+t\,|\,X\gt s)=P(X\gt t)\).</li>
+    <li><b>Joint density:</b> marginals by integrating out the other variable. \(X\) and \(Y\) are independent only if \(f(x,y)=f_X(x)f_Y(y)\).</li>
+    <li><b>Correlation coefficient</b> \(\rho=\dfrac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}\), between \(-1\) and \(1\). Regression line of \(y\) on \(x\): \(y-\bar y=\rho\dfrac{\sigma_y}{\sigma_x}(x-\bar x)\). The product of the two regression coefficients is \(\rho^2\).</li>
+    <li>For a moderately skewed distribution: mean − mode ≈ 3(mean − median).</li>
+  </ul></div>
+  <div class="sim" data-sim="distrib"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The number of defects found per shift, or calls arriving at a help desk per minute, follows a Poisson distribution. The waiting time between such random events, including the time between breakdowns of a machine with a constant failure rate, is exponential, and its mean is the MTBF. Measurement noise is close to normal. Bit errors in a data packet are binomial.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Mutually exclusive is not the same as independent. Exclusive events with non-zero probabilities are always dependent.</li>
+    <li>“At least one” is easiest as \(1-P(\text{none})\).</li>
+    <li>Uncorrelated does not imply independent, except for jointly Gaussian variables.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A fair coin is tossed 4 times. Find the probability of at least 2 heads.</summary><div class="sol">
+    <p>\(P(0)=\frac{1}{16}\), \(P(1)=\frac{4}{16}\). Answer \(=1-\frac{5}{16}=\frac{11}{16}\).</p>
+  </div></details>
+  <details class="q"><summary>A machine has on average 2 faults per week, Poisson distributed. Find the probability of no fault in a week, and of more than one fault.</summary><div class="sol">
+    <p>\(P(0)=e^{-2}=0.135\). \(P(1)=2e^{-2}=0.271\). \(P(\gt1)=1-3e^{-2}=0.594\).</p>
+  </div></details>
+</section>

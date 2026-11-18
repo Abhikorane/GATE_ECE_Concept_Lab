@@ -1,0 +1,233 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 5 · roughly 8 to 11 marks</p>
+  <h1>Digital Circuits</h1>
+  <p class="lede">The most mechanical section. The methods are procedures you can run without insight once practised, which makes these the safest marks after mathematics.</p>
+  <p class="ref"><b>Standard references:</b> Morris Mano, <i>Digital Design</i> and <i>Computer System Architecture</i>; Taub and Schilling, <i>Digital Integrated Electronics</i>; Hamacher, <i>Computer Organization</i>.</p>
+</header>
+
+<section class="topic" id="g-num">
+  <h2>Number representations</h2>
+  <p class="syl">Syllabus: binary, integer and floating-point numbers.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Base conversion:</b> group binary digits in fours for hexadecimal and in threes for octal. Integer part by repeated division, fractional part by repeated multiplication.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>\(n\)-bit format</th><th>Range</th><th>Zeros</th><th>To negate</th></tr></thead>
+    <tbody>
+      <tr><td>Unsigned</td><td>\(0\) to \(2^n-1\)</td><td>one</td><td>not possible</td></tr>
+      <tr><td>Sign-magnitude</td><td>\(-(2^{n-1}-1)\) to \(+(2^{n-1}-1)\)</td><td>two</td><td>flip the sign bit</td></tr>
+      <tr><td>One’s complement</td><td>\(-(2^{n-1}-1)\) to \(+(2^{n-1}-1)\)</td><td>two</td><td>invert every bit</td></tr>
+      <tr><td>Two’s complement</td><td>\(-2^{n-1}\) to \(+(2^{n-1}-1)\)</td><td>one</td><td>invert every bit, add 1</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Two’s complement arithmetic:</b> subtraction is addition of the negated number, with the final carry discarded. <b>Overflow</b> occurs when the carry into the sign bit differs from the carry out of it. Equivalently: two numbers of the same sign give a result of the opposite sign.</li>
+    <li><b>Sign extension:</b> to widen a two’s complement number, copy the sign bit into the new positions.</li>
+    <li><b>IEEE-754 single precision:</b> 1 sign bit \(s\), 8 exponent bits \(E\) with bias 127, 23 fraction bits \(f\). For \(1\le E\le254\): \[\text{value}=(-1)^s\times1.f\times2^{E-127}\] \(E=0\): zero or denormal numbers \((-1)^s\times0.f\times2^{-126}\). \(E=255\): infinity if \(f=0\), otherwise NaN.</li>
+    <li><b>Double precision:</b> 1 + 11 + 52 bits, bias 1023.</li>
+    <li><b>Codes:</b> BCD (8421). Excess-3 (self-complementing). Gray code, where successive values differ in one bit: \(g_i=b_i\oplus b_{i+1}\), with the top bit copied.</li>
+  </ul></div>
+  <div class="sim" data-sim="numrep"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>In any programming language, 0.1 + 0.2 does not equal 0.3 exactly, because 0.1 has no finite binary expansion. Press the “0.1” button in the simulation to see what is actually stored. Absolute rotary encoders on motor shafts output Gray code, so that a reading taken while the disc is between two positions is wrong by at most one step.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Two’s complement has one more negative value than positive: 8 bits hold −128 but not +128.</li>
+    <li>Overflow and carry are different flags. Adding −1 and −1 produces a carry out but no overflow.</li>
+    <li>Forgetting the hidden leading 1 of the mantissa, or the exponent bias.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Write −37 as an 8-bit two’s complement number.</summary><div class="sol">
+    <p>\(37=00100101\). Invert: \(11011010\). Add 1: \(11011011\), which is hex DB. Press the “−37” button in the simulation to check.</p>
+  </div></details>
+  <details class="q"><summary>Find the IEEE-754 single-precision bit pattern of −6.5 in hexadecimal.</summary><div class="sol">
+    <p>\(6.5=110.1_2=1.101_2\times2^2\). Sign 1. Exponent \(2+127=129=10000001\). Fraction \(101\) followed by zeros.</p>
+    <p>\(1\;10000001\;10100000000000000000000=\text{C0D00000}_{16}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="g-comb">
+  <h2>Combinational circuits</h2>
+  <p class="syl">Syllabus: Boolean algebra, minimization of functions using Boolean identities and Karnaugh map, logic gates and their static CMOS implementations, arithmetic circuits, code converters, multiplexers, decoders.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Identities worth memorising:</b> De Morgan \(\overline{A+B}=\bar A\bar B\) and \(\overline{AB}=\bar A+\bar B\). Absorption \(A+AB=A\). \(A+\bar AB=A+B\). Consensus \(AB+\bar AC+BC=AB+\bar AC\).</li>
+    <li>NAND alone, or NOR alone, can build any logic function. There are \(2^{2^n}\) different functions of \(n\) variables.</li>
+    <li><b>Karnaugh map rules:</b> group adjacent 1s in rectangles of 1, 2, 4, 8 or 16 cells. The map wraps around at the edges and corners. Make each group as large as possible and use as few groups as possible. A don’t-care cell may be treated as 1 if that enlarges a group. A group of \(2^k\) cells eliminates \(k\) variables.</li>
+    <li>A <b>prime implicant</b> is a group that cannot be enlarged. It is <b>essential</b> if it covers a 1 that no other prime implicant covers.</li>
+    <li><b>Static CMOS:</b> a pull-down network of nMOS and a complementary pull-up network of pMOS. NAND: nMOS in series, pMOS in parallel. NOR: nMOS in parallel, pMOS in series. An \(n\)-input NAND or NOR uses \(2n\) transistors. A single CMOS stage always inverts.</li>
+    <li>CMOS static power is nearly zero. Dynamic power is \(P=\alpha CV_{DD}^2f\). Noise margins: \(NM_H=V_{OH}-V_{IH}\) and \(NM_L=V_{IL}-V_{OL}\).</li>
+    <li><b>Adders:</b> half adder \(S=A\oplus B\), \(C=AB\). Full adder \(S=A\oplus B\oplus C_{in}\), \(C_{out}=AB+C_{in}(A\oplus B)\). A ripple-carry adder’s delay grows with the number of bits. Carry look-ahead uses \(G_i=A_iB_i\), \(P_i=A_i\oplus B_i\), \(C_{i+1}=G_i+P_iC_i\).</li>
+    <li><b>Multiplexer:</b> a \(2^n\)-to-1 MUX implements any function of \(n\) variables directly, and any function of \(n+1\) variables by feeding the last variable, its complement, 0 or 1 to the data inputs. Building a \(2^n\)-to-1 MUX from 2-to-1 MUXes takes \(2^n-1\) of them.</li>
+    <li><b>Decoder:</b> an \(n\)-to-\(2^n\) decoder produces every minterm. Add an OR gate per output to implement any set of functions.</li>
+    <li><b>Hazards:</b> a static-1 hazard appears when two adjacent 1s on the K-map lie in different groups. Adding the consensus term that bridges them removes it.</li>
+  </ul></div>
+  <div class="sim" data-sim="kmap"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The chip that drives a seven-segment display is seven K-map problems, one per segment, each with six don’t-care inputs because BCD never uses 10 to 15. Load the “7-segment a” example in the simulation. Ladder logic in an industrial controller is Boolean algebra drawn as wiring: contacts in series are AND, contacts in parallel are OR, and a normally-closed contact is NOT.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>K-map rows and columns are ordered 00, 01, 11, 10, not in binary counting order.</li>
+    <li>Don’t-cares are optional. Never add a group that covers only don’t-cares.</li>
+    <li>The four corner cells of a 4-variable map are adjacent to each other and form one group.</li>
+    <li>Check which select line of a MUX is the most significant bit before filling in its data inputs.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Minimise \(F(A,B,C,D)=\sum m(0,2,5,7,8,10,13,15)\).</summary><div class="sol">
+    <p>Cells 0, 2, 8, 10 are the four corners: \(\bar B\bar D\). Cells 5, 7, 13, 15 are the centre block: \(BD\).</p>
+    <p>\(F=\bar B\bar D+BD\), which is \(B\) XNOR \(D\). The simulation opens with this function loaded.</p>
+  </div></details>
+  <details class="q"><summary>Implement \(F=A\oplus B\) with one 2-to-1 multiplexer.</summary><div class="sol">
+    <p>Use \(A\) as the select line. When \(A=0\), \(F=B\), so connect \(I_0=B\). When \(A=1\), \(F=\bar B\), so connect \(I_1=\bar B\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="g-seq">
+  <h2>Sequential circuits and timing</h2>
+  <p class="syl">Syllabus: latches and flip-flops, counters, shift-registers, finite state machines, propagation delay, setup and hold time, critical path delay.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A <b>latch</b> is transparent while its enable is active. A <b>flip-flop</b> changes only on a clock edge.</li>
+    <li><b>Characteristic equations:</b> SR: \(Q^+=S+\bar RQ\) with \(SR=0\). JK: \(Q^+=J\bar Q+\bar KQ\). D: \(Q^+=D\). T: \(Q^+=T\oplus Q\).</li>
+    <li><b>Asynchronous (ripple) counter:</b> each flip-flop clocks the next. Simple, but delays add: \(f_{max}=\dfrac{1}{n\,t_{pd}}\) for \(n\) stages.</li>
+    <li><b>Synchronous counter:</b> one common clock, \(f_{max}=\dfrac{1}{t_{pd,FF}+t_{logic}+t_{setup}}\). A mod-\(N\) counter needs \(\lceil\log_2N\rceil\) flip-flops. Cascading mod-\(M\) and mod-\(N\) counters gives mod-\(MN\).</li>
+    <li><b>Ring counter:</b> \(n\) flip-flops, \(n\) states. <b>Johnson (twisted-ring) counter:</b> \(n\) flip-flops, \(2n\) states, leaving \(2^n-2n\) unused states.</li>
+    <li><b>Shift registers:</b> serial-in or parallel-in, serial-out or parallel-out. Loading \(n\) bits serially takes \(n\) clock pulses.</li>
+    <li><b>Finite state machines:</b> in a Moore machine the output depends only on the state. In a Mealy machine it depends on the state and the present input, which usually needs fewer states and responds one clock earlier. \(k\) flip-flops give at most \(2^k\) states.</li>
+    <li><b>Setup time</b> \(t_{su}\): data must be steady this long before the clock edge. <b>Hold time</b> \(t_h\): data must stay steady this long after it.</li>
+    <li><b>Timing constraints</b> between two flip-flops, with clock-to-Q delay \(t_{cq}\), longest logic delay \(t_{pd}\) and shortest logic delay \(t_{cd}\): \[T_{clk}\ge t_{cq}+t_{pd}+t_{su}\qquad\text{and}\qquad t_{cq}+t_{cd}\ge t_h\]</li>
+    <li>The <b>critical path</b> is the longest register-to-register delay. It sets the maximum clock frequency.</li>
+    <li>Violating setup or hold can leave a flip-flop <b>metastable</b>, hovering between 0 and 1 for an unpredictable time. Asynchronous inputs are passed through two flip-flops in series to make this harmless.</li>
+  </ul></div>
+  <div class="sim" data-sim="timing"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The clock speed printed on a processor’s box is set by its critical path. Overclocking shortens the period until some path fails its setup check, and the computer crashes. A quartz watch divides its 32 768 Hz crystal by two, fifteen times in a row, with a ripple counter to produce one tick per second.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The hold constraint does not contain the clock period. A slower clock cannot fix a hold violation.</li>
+    <li>For a ripple counter all the flip-flop delays add. For a synchronous counter only one does.</li>
+    <li>A JK flip-flop with \(J=K=1\) toggles. An SR latch with \(S=R=1\) is forbidden.</li>
+    <li>With clock skew, the capturing clock arriving later helps setup and hurts hold.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Two flip-flops have \(t_{cq}=1\text{ ns}\) and \(t_{su}=1\text{ ns}\). The logic between them has a longest delay of 5 ns. Find the maximum clock frequency.</summary><div class="sol">
+    <p>\(T_{min}=1+5+1=7\text{ ns}\), so \(f_{max}=142.9\text{ MHz}\). These are the default values in the simulation: reduce the clock period below 7 ns to see the setup check fail.</p>
+  </div></details>
+  <details class="q"><summary>A 4-bit ripple counter uses flip-flops with a 10 ns propagation delay. Find its maximum clock frequency. How many unused states does a 4-flip-flop Johnson counter have?</summary><div class="sol">
+    <p>\(f_{max}=\dfrac{1}{4\times10\text{ ns}}=25\text{ MHz}\).</p>
+    <p>A Johnson counter with 4 flip-flops uses \(2\times4=8\) states, so \(16-8=8\) are unused.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="g-conv">
+  <h2>Data converters</h2>
+  <p class="syl">Syllabus: sample and hold circuits, ADCs and DACs.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Sample and hold:</b> a switch charges a capacitor to the input (acquisition), then opens so the converter sees a steady voltage. While holding, leakage makes the voltage droop at \(\dfrac{dV}{dt}=\dfrac{I_{leak}}{C_H}\).</li>
+    <li><b>DAC:</b> for \(n\) bits and reference \(V_{ref}\), the step (1 LSB) is \(\dfrac{V_{ref}}{2^n}\) and the largest output is \(V_{ref}\left(1-2^{-n}\right)\). Percentage resolution \(=\dfrac{100}{2^n-1}\).</li>
+    <li>A <b>binary-weighted</b> DAC needs resistors from \(R\) to \(2^{n-1}R\), which is hard to match. An <b>R–2R ladder</b> needs only two values.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>ADC type</th><th>Conversion time</th><th>Hardware</th><th>Typical use</th></tr></thead>
+    <tbody>
+      <tr><td>Flash</td><td>1 clock</td><td>\(2^n-1\) comparators</td><td>oscilloscopes, radio</td></tr>
+      <tr><td>Successive approximation</td><td>\(n\) clocks</td><td>1 comparator, a DAC, a register</td><td>microcontrollers, data acquisition</td></tr>
+      <tr><td>Counter (ramp)</td><td>up to \(2^n-1\) clocks</td><td>1 comparator, a DAC, a counter</td><td>slow, simple</td></tr>
+      <tr><td>Dual slope</td><td>up to \(2^{n+1}\) clocks</td><td>integrator, comparator, counter</td><td>multimeters</td></tr>
+      <tr><td>Sigma-delta</td><td>many clocks (oversampled)</td><td>1-bit loop and digital filter</td><td>audio, precision sensors</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Quantization:</b> the error lies within \(\pm\tfrac12\) LSB. Treated as noise it has power \(\dfrac{\Delta^2}{12}\). For a full-scale sine wave: \(\text{SQNR}=6.02n+1.76\text{ dB}\).</li>
+    <li><b>Static errors:</b> offset, gain error, differential non-linearity (step sizes unequal) and integral non-linearity (deviation from the straight line). A DAC is monotonic if its output never decreases as the code increases.</li>
+  </ul></div>
+  <div class="sim" data-sim="quantize"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A digital multimeter uses a dual-slope converter. It integrates the input over a whole number of mains cycles, so 50 Hz hum averages to zero. The analog pins on a microcontroller feed a successive-approximation converter. A pressure or temperature transmitter on a plant reaches the controller through a 12-bit to 16-bit analog input card of the same kind.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>A flash converter needs \(2^n-1\) comparators, not \(2^n\).</li>
+    <li>Resolution is the step size. Accuracy is how close the result is to the truth. A converter can have fine resolution and poor accuracy.</li>
+    <li>Some questions define the step as \(V_{FS}/(2^n-1)\) with \(V_{FS}\) the actual maximum output. Follow the definition given.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A 10-bit ADC has a 5 V reference. Find the LSB size, the ideal SQNR for a full-scale sine, the number of comparators in a flash design, and the conversion time of a successive-approximation design clocked at 1 MHz.</summary><div class="sol">
+    <p>LSB \(=5/1024=4.88\text{ mV}\). SQNR \(=6.02\times10+1.76=61.96\text{ dB}\).</p>
+    <p>Flash: \(2^{10}-1=1023\) comparators. Successive approximation: 10 clocks \(=10\ \mu\text{s}\).</p>
+  </div></details>
+  <details class="q"><summary>An 8-bit DAC has a step size of 20 mV. Find its largest output voltage.</summary><div class="sol">
+    <p>The largest code is 255, so the output is \(255\times20\text{ mV}=5.10\text{ V}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="g-mem">
+  <h2>Semiconductor memories</h2>
+  <p class="syl">Syllabus: ROM, SRAM, DRAM.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>ROM</b> keeps its contents without power. Variants: mask ROM (fixed at manufacture), PROM (programmed once), EPROM (erased with ultraviolet light), EEPROM and Flash (erased electrically).</li>
+    <li>A ROM with \(n\) address lines and \(m\) data lines stores \(2^n\times m\) bits. Seen as logic, it is a fixed \(n\)-to-\(2^n\) decoder followed by a programmable OR array, so it can implement any \(m\) functions of \(n\) variables.</li>
+    <li>A <b>PLA</b> has programmable AND and OR arrays. A <b>PAL</b> has a programmable AND array and a fixed OR array.</li>
+    <li><b>SRAM:</b> each bit is a six-transistor cell made of two cross-coupled inverters and two access transistors. Fast, no refresh, large cell. Used for processor caches. Loses its data when power is removed.</li>
+    <li><b>DRAM:</b> each bit is one transistor and one capacitor. Dense and cheap. The charge leaks, so every cell is refreshed every few tens of milliseconds. Reading is destructive and is followed by a rewrite. Used for main memory.</li>
+    <li><b>Flash:</b> a floating-gate transistor that traps charge for years. NAND flash is dense and used for storage. NOR flash allows random access and is used for program code.</li>
+    <li><b>Sizing:</b> a memory of \(2^n\) words by \(m\) bits needs \(n\) address lines. Number of chips needed \(=\dfrac{\text{total bits required}}{\text{bits per chip}}\). The extra address lines go to a decoder that drives the chip-select inputs.</li>
+  </ul></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>“8 GB RAM” on a phone is DRAM. Its storage is NAND flash. The processor’s cache is SRAM on the same chip as the processor. The firmware of a washing machine, a car’s engine controller or an industrial controller sits in flash, which is why it survives power cuts and can still be updated.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>In memory sizes 1 K is 1024, not 1000. 64 K words need 16 address lines.</li>
+    <li>A ROM is a combinational circuit. It has no clock and no state in the logic sense.</li>
+    <li>SRAM and DRAM are both volatile. “Static” only means no refresh is needed.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>How many 16 K × 4 memory chips are needed to build a 64 K × 8 memory? What decoder is needed?</summary><div class="sol">
+    <p>\(\dfrac{64\text{ K}\times8}{16\text{ K}\times4}=8\) chips, arranged as 4 rows of 2 chips. The 64 K memory has 16 address lines. Each chip uses 14, and the top 2 feed a 2-to-4 decoder that selects the row.</p>
+  </div></details>
+  <details class="q"><summary>What size of ROM implements a multiplier for two 4-bit numbers?</summary><div class="sol">
+    <p>8 input bits and 8 output bits, so \(2^8\times8=256\times8=2048\) bits.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="g-co">
+  <h2>Computer organization</h2>
+  <p class="syl">Syllabus: machine instructions and addressing modes, ALU, data-path and control unit, instruction pipelining.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A <b>machine instruction</b> has an opcode and operand fields. An instruction with a \(k\)-bit opcode field can encode \(2^k\) operations. An \(n\)-bit address field reaches \(2^n\) locations.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Addressing mode</th><th>Where the operand is</th><th>Typical use</th></tr></thead>
+    <tbody>
+      <tr><td>Immediate</td><td>in the instruction itself</td><td>constants</td></tr>
+      <tr><td>Direct (absolute)</td><td>at the address given in the instruction</td><td>global variables</td></tr>
+      <tr><td>Indirect</td><td>at the address stored at the given address</td><td>pointers</td></tr>
+      <tr><td>Register</td><td>in a register</td><td>local variables</td></tr>
+      <tr><td>Register indirect</td><td>at the address held in a register</td><td>pointers, loops</td></tr>
+      <tr><td>Indexed / base + offset</td><td>at register + constant</td><td>arrays, records</td></tr>
+      <tr><td>PC-relative</td><td>at program counter + offset</td><td>branches, relocatable code</td></tr>
+      <tr><td>Auto-increment / decrement</td><td>register indirect, then the register steps</td><td>stacks, stepping through arrays</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Data-path:</b> registers, the ALU and the buses that connect them. <b>ALU:</b> adder/subtractor, logic unit and shifter, with status flags zero, carry, sign and overflow.</li>
+    <li><b>Control unit:</b> hardwired (fast, fixed logic) or microprogrammed (control signals read from a control memory, slower but easy to change).</li>
+    <li><b>Instruction cycle:</b> fetch, decode, execute, memory access, write back.</li>
+    <li><b>Pipelining</b> with \(k\) stages and \(n\) instructions: time \(=(k+n-1)\,T_{clk}\). Without pipelining and with the same stage time: \(nk\,T_{clk}\). \[\text{Speedup}=\frac{nk}{k+n-1}\to k\text{ as }n\to\infty\]</li>
+    <li>The pipeline clock period is the slowest stage delay plus the register (latch) delay. A non-pipelined processor takes the sum of all stage delays per instruction.</li>
+    <li><b>Hazards:</b> structural (two instructions need the same hardware), data (an instruction needs a result not yet written, fixed by forwarding or stalling) and control (the instruction after a branch is fetched before the branch is resolved, fixed by prediction or flushing).</li>
+    <li>With stalls: \(\text{Speedup}=\dfrac{k}{1+\text{stall cycles per instruction}}\) for equal stages.</li>
+    <li><b>Performance:</b> CPU time = instruction count × cycles per instruction × clock period. <b>Amdahl’s law:</b> speeding up a fraction \(f\) of the work by a factor \(s\) gives an overall speedup of \(\dfrac{1}{(1-f)+f/s}\).</li>
+  </ul></div>
+  <div class="sim" data-sim="pipeline"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A pipeline is an assembly line. On an engine line each station does one operation, and a finished engine comes off the end every takt time even though any one engine spends an hour on the line. The slowest station sets the pace of the whole line, exactly as the slowest stage sets the clock period. A missing part that stops one station holds up everything behind it, which is a stall.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The pipeline clock period is the maximum stage delay plus the latch delay, not the average.</li>
+    <li>The first instruction still takes \(k\) cycles. Pipelining improves throughput, not the latency of one instruction.</li>
+    <li>When stage delays are unequal, the non-pipelined time is the sum of the stage delays, not \(k\) times the largest.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A 5-stage pipeline has stage delays of 10, 8, 12, 9 and 6 ns and a pipeline-register delay of 1 ns. Find the speedup over a non-pipelined design for 100 instructions.</summary><div class="sol">
+    <p>Pipeline clock \(=12+1=13\text{ ns}\). Pipelined time \(=(5+100-1)\times13=1352\text{ ns}\).</p>
+    <p>Non-pipelined: \(10+8+12+9+6=45\text{ ns}\) per instruction, so \(4500\text{ ns}\). Speedup \(=4500/1352=3.33\), well below 5.</p>
+  </div></details>
+</section>

@@ -1,0 +1,189 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 4 · roughly 9 to 12 marks</p>
+  <h1>Analog Circuits</h1>
+  <p class="lede">Every problem follows the same two steps: find the DC operating point, then replace each device by its small-signal model. Speed comes from knowing the standard results for each configuration.</p>
+  <p class="ref"><b>Standard references:</b> Sedra and Smith, <i>Microelectronic Circuits</i>; Razavi, <i>Fundamentals of Microelectronics</i>; Gayakwad, <i>Op-Amps and Linear Integrated Circuits</i>.</p>
+</header>
+
+<section class="topic" id="a-diode">
+  <h2>Diode circuits</h2>
+  <p class="syl">Syllabus: clipping, clamping and rectifiers.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Method:</b> assume each diode is on or off, solve the linear circuit, then verify. An “on” diode must carry forward current. An “off” diode must have less than \(V_\gamma\) across it. If the check fails, change the assumption.</li>
+    <li><b>Models:</b> ideal (short or open), constant drop (0.7 V for silicon), or piecewise linear (\(V_\gamma\) in series with \(r_d\)).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Rectifier (ideal diodes)</th><th>\(V_{dc}\)</th><th>\(V_{rms}\)</th><th>Ripple factor</th><th>Efficiency</th><th>PIV</th><th>Ripple frequency</th></tr></thead>
+    <tbody>
+      <tr><td>Half-wave</td><td>\(V_m/\pi\)</td><td>\(V_m/2\)</td><td>1.21</td><td>40.6 %</td><td>\(V_m\)</td><td>\(f\)</td></tr>
+      <tr><td>Full-wave, centre-tap</td><td>\(2V_m/\pi\)</td><td>\(V_m/\sqrt2\)</td><td>0.48</td><td>81.2 %</td><td>\(2V_m\)</td><td>\(2f\)</td></tr>
+      <tr><td>Full-wave, bridge</td><td>\(2V_m/\pi\)</td><td>\(V_m/\sqrt2\)</td><td>0.48</td><td>81.2 %</td><td>\(V_m\)</td><td>\(2f\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Capacitor filter:</b> for \(RC\gg T\), peak-to-peak ripple \(V_r\approx\dfrac{V_m}{fRC}\) for half-wave and \(\dfrac{V_m}{2fRC}\) for full-wave.</li>
+    <li><b>Clipper:</b> removes the part of the waveform beyond a level set by a battery and the diode drop. The diode can be in series or in shunt with the output.</li>
+    <li><b>Clamper:</b> a series capacitor and a shunt diode. It adds a DC level without changing the shape or the peak-to-peak swing. Needs \(RC\gg T\). Start the analysis in the half-cycle that turns the diode on, since that is when the capacitor charges.</li>
+    <li><b>Voltage doubler:</b> a clamper followed by a peak detector gives about \(2V_m\).</li>
+  </ul></div>
+  <div class="sim" data-sim="diodeckt"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Every phone charger starts with a bridge rectifier and a filter capacitor. An AM radio recovers the audio with a diode peak detector. Clamp diodes sit on the input pins of nearly every integrated circuit to keep static discharge from exceeding the supply rails.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>PIV is \(2V_m\) for the centre-tap circuit but only \(V_m\) for the bridge.</li>
+    <li>A bridge has two diodes in series with the load at any instant, so the peak output is \(V_m-2V_\gamma\).</li>
+    <li>A clamper never changes the peak-to-peak value. If your answer does, the capacitor voltage is wrong.</li>
+    <li>Transformer ratings are rms. Convert to peak with \(\sqrt2\) before anything else.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A bridge rectifier is fed from a 12 V rms secondary and uses silicon diodes (0.7 V). Find the peak output voltage and the PIV of each diode.</summary><div class="sol">
+    <p>\(V_m=12\sqrt2=16.97\text{ V}\). Peak output \(=16.97-1.4=15.57\text{ V}\).</p>
+    <p>PIV \(=V_m-0.7=16.27\text{ V}\), which is approximately \(V_m\).</p>
+  </div></details>
+  <details class="q"><summary>A full-wave rectifier at 50 Hz with \(V_m=15\text{ V}\) feeds \(R_L=1\text{ k}\Omega\) through a \(1000\ \mu\text{F}\) filter capacitor. Estimate the ripple.</summary><div class="sol">
+    <p>\(V_r\approx\dfrac{V_m}{2fRC}=\dfrac{15}{2\times50\times1000\times10^{-3}}=0.15\text{ V}\) peak to peak.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="a-amp">
+  <h2>BJT and MOSFET amplifiers</h2>
+  <p class="syl">Syllabus: biasing, AC coupling, small signal analysis, frequency response.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Biasing</b> must hold the operating point steady against changes in \(\beta\), \(V_T\) and temperature. A resistor in the emitter or source lead gives negative feedback that does this. Stability factor \(S=\dfrac{dI_C}{dI_{CO}}\): fixed bias has \(S=1+\beta\) (poor). Voltage-divider bias with \(R_E\) approaches \(S=1\).</li>
+    <li><b>Small-signal parameters:</b> BJT: \(g_m=I_C/V_T\), \(r_\pi=\beta/g_m\), \(r_e=V_T/I_E\), \(r_o=V_A/I_C\). MOSFET: \(g_m=2I_D/V_{ov}\), \(r_o=1/(\lambda I_D)\).</li>
+    <li><b>For the DC solution</b> open every capacitor. <b>For the mid-band AC solution</b> short the coupling and bypass capacitors and ground every DC supply.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Stage</th><th>Voltage gain</th><th>\(R_{in}\)</th><th>\(R_{out}\)</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>Common emitter</td><td>\(-g_m(R_C\|r_o)\)</td><td>\(r_\pi\)</td><td>\(R_C\|r_o\)</td><td>gain</td></tr>
+      <tr><td>CE with \(R_E\)</td><td>\(\approx-\dfrac{R_C}{r_e+R_E}\)</td><td>\(r_\pi+(\beta+1)R_E\)</td><td>\(\approx R_C\)</td><td>stable gain</td></tr>
+      <tr><td>Common collector</td><td>\(\approx1\)</td><td>\(r_\pi+(\beta+1)R_E\)</td><td>\(r_e+\dfrac{R_s}{\beta+1}\)</td><td>buffer</td></tr>
+      <tr><td>Common base</td><td>\(+g_mR_C\)</td><td>\(r_e\)</td><td>\(R_C\)</td><td>high frequency</td></tr>
+      <tr><td>Common source</td><td>\(-g_m(R_D\|r_o)\)</td><td>\(\infty\)</td><td>\(R_D\|r_o\)</td><td>gain</td></tr>
+      <tr><td>CS with \(R_S\)</td><td>\(-\dfrac{g_mR_D}{1+g_mR_S}\)</td><td>\(\infty\)</td><td>\(\approx R_D\)</td><td>stable gain</td></tr>
+      <tr><td>Common drain</td><td>\(\dfrac{g_mR_S}{1+g_mR_S}\)</td><td>\(\infty\)</td><td>\(\dfrac{1}{g_m}\|R_S\)</td><td>buffer</td></tr>
+      <tr><td>Common gate</td><td>\(+g_mR_D\)</td><td>\(1/g_m\)</td><td>\(R_D\)</td><td>high frequency</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Low-frequency cut-off</b> comes from coupling and bypass capacitors: each gives a pole at \(f=\dfrac{1}{2\pi R_{seen}C}\), where \(R_{seen}\) is the resistance the capacitor sees. The emitter bypass capacitor usually dominates because it sees the smallest resistance.</li>
+    <li><b>High-frequency cut-off</b> comes from the device capacitances. <b>Miller effect:</b> a capacitor \(C_\mu\) between input and output of a stage with gain \(-A\) looks like \(C_\mu(1+A)\) at the input. \(f_H\approx\dfrac{1}{2\pi R_{sig}'\,[C_\pi+C_\mu(1+g_mR_L')]}\).</li>
+    <li><b>Transition frequency:</b> \(f_T=\dfrac{g_m}{2\pi(C_\pi+C_\mu)}\) for a BJT and \(\dfrac{g_m}{2\pi(C_{gs}+C_{gd})}\) for a MOSFET.</li>
+    <li>A <b>cascode</b> (CE or CS followed by CB or CG) removes the Miller multiplication and raises the output resistance.</li>
+    <li>\(n\) identical cascaded stages: \(f_{H,total}=f_H\sqrt{2^{1/n}-1}\).</li>
+  </ul></div>
+  <div class="sim" data-sim="csamp"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The first stage after a microphone, a guitar pickup or a radio antenna is a common-emitter or common-source amplifier, often in cascode form. Source followers buffer sensor outputs so that a long cable does not load the sensor. When an audio amplifier is driven too hard, the sound turns harsh for the reason shown in the simulation: the operating point runs into cut-off or leaves the active region, and the waveform is clipped.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>CE and CS invert. CB, CG, CC and CD do not.</li>
+    <li>A resistance in the emitter looks \((\beta+1)\) times larger from the base. A resistance in the base looks \((\beta+1)\) times smaller from the emitter.</li>
+    <li>If \(R_E\) is bypassed it disappears from the AC gain but still sets the DC bias.</li>
+    <li>Include the load: the gain uses \(R_C\|R_L\), and the source resistance forms a divider with \(R_{in}\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A common-emitter stage is biased at \(I_C=1\text{ mA}\) with \(R_C=4.7\text{ k}\Omega\), \(\beta=100\), no load and \(r_o\to\infty\). Find the voltage gain and input resistance at the base.</summary><div class="sol">
+    <p>\(g_m=38.6\text{ mS}\). \(A_v=-g_mR_C=-181\). \(R_{in}=r_\pi=2.59\text{ k}\Omega\).</p>
+  </div></details>
+  <details class="q"><summary>A common-source stage has \(I_D=0.5\text{ mA}\), \(V_{ov}=0.5\text{ V}\) and \(R_D=10\text{ k}\Omega\). Find the gain. What is it if a \(500\ \Omega\) resistor is added in the source without a bypass capacitor?</summary><div class="sol">
+    <p>\(g_m=2I_D/V_{ov}=2\text{ mS}\). \(A_v=-g_mR_D=-20\).</p>
+    <p>With \(R_S=500\ \Omega\): \(A_v=-\dfrac{20}{1+2\text{ mS}\times0.5\text{ k}\Omega}=-10\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="a-mirror">
+  <h2>Current mirrors and differential amplifiers</h2>
+  <p class="syl">Syllabus: current mirrors and differential amplifiers.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>MOS current mirror:</b> \(\dfrac{I_{out}}{I_{ref}}=\dfrac{(W/L)_2}{(W/L)_1}\) with both devices in saturation. Output resistance \(r_{o2}\). Minimum output voltage \(V_{ov}\).</li>
+    <li><b>BJT mirror:</b> \(I_{out}=\dfrac{I_{ref}}{1+2/\beta}\) because of base currents. A <b>Wilson</b> mirror reduces the error to about \(2/\beta^2\) and raises the output resistance to about \(\beta r_o/2\). A <b>Widlar</b> mirror makes small currents: \(I_{out}R_E=V_T\ln(I_{ref}/I_{out})\). A <b>cascode</b> mirror has output resistance about \(g_mr_o^2\).</li>
+    <li><b>Differential pair</b> (BJT, tail current \(I_{EE}\), each transistor at \(I_{EE}/2\)): \(g_m=\dfrac{I_{EE}}{2V_T}\). Differential gain with the output taken between the collectors: \(A_d=-g_mR_C\). Taken from one collector: half of that. Differential input resistance \(2r_\pi\).</li>
+    <li><b>Common-mode gain</b> (single-ended output, tail source resistance \(R_{EE}\)): \(A_{cm}\approx-\dfrac{R_C}{2R_{EE}}\). \(\text{CMRR}=\left|\dfrac{A_d}{A_{cm}}\right|\approx g_mR_{EE}\). A better tail current source means a higher CMRR.</li>
+    <li><b>Half-circuit method:</b> for a purely differential input the common emitter or source node is an AC ground. For a common-mode input, split the tail resistance into \(2R_{EE}\) in each half.</li>
+    <li><b>Large-signal behaviour</b> (BJT): \(i_{C1}=\dfrac{I_{EE}}{1+e^{-v_{id}/V_T}}\). Linear only for \(|v_{id}|\) below about \(V_T\). Fully switched by about \(4V_T\). A MOS pair switches fully at \(|v_{id}|=\sqrt2\,V_{ov}\).</li>
+    <li>An <b>active load</b> (a current mirror on top of the pair) converts to a single-ended output without losing half the gain: \(A_d=g_m(r_{o2}\|r_{o4})\).</li>
+  </ul></div>
+  <div class="sim" data-sim="diffpair"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>CAN bus in vehicles, USB, Ethernet and RS-485 all send data as the difference between two wires. Electrical noise from motors and ignition couples equally onto both wires, and the differential receiver rejects it. That rejection is the CMRR. The input stage of every op-amp and instrumentation amplifier, for example on a strain-gauge load cell, is a differential pair.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Each transistor carries \(I_{EE}/2\). Using the full tail current for \(g_m\) doubles the gain by mistake.</li>
+    <li>Single-ended output gives half the differential gain, unless there is an active load.</li>
+    <li>CMRR in dB is \(20\log_{10}\) of the ratio.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A BJT differential pair has \(I_{EE}=1\text{ mA}\), \(R_C=10\text{ k}\Omega\), tail resistance \(R_{EE}=100\text{ k}\Omega\), and \(V_T=25\text{ mV}\). Find the differential gain for differential and single-ended outputs, and the CMRR for the single-ended output.</summary><div class="sol">
+    <p>\(g_m=\dfrac{0.5\text{ mA}}{25\text{ mV}}=20\text{ mS}\). Differential output: \(A_d=-200\). Single-ended: magnitude 100.</p>
+    <p>\(|A_{cm}|=\dfrac{10}{2\times100}=0.05\). \(\text{CMRR}=\dfrac{100}{0.05}=2000\), which is 66 dB.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="a-opamp">
+  <h2>Op-amp circuits</h2>
+  <p class="syl">Syllabus: amplifiers, summers, differentiators, integrators, Schmitt trigger.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Ideal op-amp with negative feedback:</b> no current into either input, and the two inputs sit at the same voltage (virtual short). These two rules solve every linear op-amp circuit.</li>
+    <li><b>Inverting:</b> \(-\dfrac{R_2}{R_1}\), input resistance \(R_1\). <b>Non-inverting:</b> \(1+\dfrac{R_2}{R_1}\), input resistance very high. <b>Follower:</b> gain 1.</li>
+    <li><b>Summer:</b> \(v_o=-R_f\left(\dfrac{v_1}{R_1}+\dfrac{v_2}{R_2}+\dots\right)\). <b>Difference amplifier</b> with matched ratios: \(v_o=\dfrac{R_2}{R_1}(v_2-v_1)\). <b>Instrumentation amplifier:</b> \(\left(1+\dfrac{2R}{R_G}\right)\dfrac{R_4}{R_3}\).</li>
+    <li><b>Integrator:</b> \(v_o=-\dfrac{1}{RC}\displaystyle\int v_i\,dt\), \(H(s)=-\dfrac{1}{sRC}\). <b>Differentiator:</b> \(v_o=-RC\dfrac{dv_i}{dt}\).</li>
+    <li><b>Finite open-loop gain \(A\):</b> closed-loop gain \(=\dfrac{A}{1+A\beta}\), with fractional error about \(\dfrac{1}{A\beta}\).</li>
+    <li><b>Offsets:</b> an input offset voltage \(V_{os}\) appears at the output multiplied by \(1+R_2/R_1\). Bias-current error is cancelled by a resistor \(R_1\|R_2\) in series with the non-inverting input.</li>
+    <li><b>Slew rate</b> limits large signals: the highest undistorted sine frequency at peak \(V_p\) is \(f=\dfrac{SR}{2\pi V_p}\).</li>
+    <li><b>Schmitt trigger</b> (positive feedback, output at \(\pm V_{sat}\)). Inverting type: thresholds \(\pm\beta V_{sat}\) with \(\beta=\dfrac{R_1}{R_1+R_2}\), hysteresis width \(2\beta V_{sat}\). Non-inverting type: thresholds \(\pm\dfrac{R_1}{R_2}V_{sat}\).</li>
+    <li>Other standard blocks: precision rectifier (diode inside the feedback loop), log amplifier \(v_o=-V_T\ln\dfrac{v_i}{RI_s}\), peak detector.</li>
+  </ul></div>
+  <div class="sim" data-sim="schmitt"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A thermostat on a refrigerator, a geyser or an air conditioner switches on at one temperature and off at a slightly different one. Without that hysteresis the compressor would chatter on and off around a single set-point. Digital inputs that receive slow or noisy signals, such as a push button or a long sensor cable, use Schmitt-trigger gates for the same reason.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The virtual short exists only with negative feedback and an unsaturated output. In a comparator or Schmitt trigger the inputs are not equal.</li>
+    <li>The input resistance of an inverting amplifier is \(R_1\), not infinity.</li>
+    <li>Check which input the feedback returns to before choosing a formula. Feedback to the + input means positive feedback.</li>
+    <li>If the computed output exceeds the supply, the answer is \(\pm V_{sat}\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>An inverting amplifier uses \(R_1=1\text{ k}\Omega\), \(R_2=10\text{ k}\Omega\) and an op-amp with unity-gain frequency 1 MHz. Find the gain and the 3 dB bandwidth.</summary><div class="sol">
+    <p>Gain \(=-10\). Bandwidth is set by the noise gain \(1+R_2/R_1=11\): \(f_{3dB}=1\text{ MHz}/11=90.9\text{ kHz}\).</p>
+  </div></details>
+  <details class="q"><summary>An inverting Schmitt trigger has \(V_{sat}=\pm12\text{ V}\), \(R_1=1\text{ k}\Omega\) from the + input to ground, and \(R_2=11\text{ k}\Omega\) from the output to the + input. Find the thresholds and the hysteresis width.</summary><div class="sol">
+    <p>\(\beta=\dfrac{1}{1+11}=\dfrac{1}{12}\). Thresholds \(=\pm1\text{ V}\). Hysteresis width \(=2\text{ V}\). In the simulation this is \(\beta\approx0.08\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="a-comp">
+  <h2>Filters, oscillators, compensation</h2>
+  <p class="syl">Syllabus: active filters, oscillators, dominant-pole (Miller) compensation, phase margin.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>First-order active low-pass:</b> \(H(s)=-\dfrac{R_2}{R_1}\,\dfrac{1}{1+sR_2C}\), cut-off \(f_c=\dfrac{1}{2\pi R_2C}\). Roll-off is \(20n\) dB per decade for order \(n\).</li>
+    <li><b>Butterworth</b> (maximally flat): \(|H|^2=\dfrac{1}{1+(\omega/\omega_c)^{2n}}\). <b>Sallen–Key</b> second-order section with equal \(R\) and equal \(C\): \(\omega_0=\dfrac{1}{RC}\), \(Q=\dfrac{1}{3-K}\) where \(K\) is the amplifier gain. Butterworth needs \(Q=0.707\), so \(K=1.586\).</li>
+    <li><b>Barkhausen criterion</b> for sustained oscillation: loop gain magnitude 1 and total loop phase 0° (or 360°).</li>
+    <li><b>Oscillator frequencies:</b> Wien bridge \(f_0=\dfrac{1}{2\pi RC}\), needs amplifier gain 3. RC phase shift (three sections): \(f_0=\dfrac{1}{2\pi RC\sqrt6}\), needs gain 29. Hartley: \(\dfrac{1}{2\pi\sqrt{(L_1+L_2)C}}\). Colpitts: \(\dfrac{1}{2\pi\sqrt{LC_1C_2/(C_1+C_2)}}\). Crystal oscillators use the very high \(Q\) of quartz.</li>
+    <li><b>Relaxation oscillator</b> from a Schmitt trigger and an RC: \(T=2RC\ln\dfrac{1+\beta}{1-\beta}\). <b>555 timer:</b> astable \(f=\dfrac{1.44}{(R_A+2R_B)C}\), monostable \(T=1.1RC\).</li>
+    <li><b>Gain–bandwidth product:</b> for a single-pole op-amp, closed-loop bandwidth \(=f_T\,\beta\), where \(\beta\) is the feedback fraction.</li>
+    <li><b>Phase margin</b> is measured on the loop gain \(T(s)=A(s)\beta\): \(PM=180^\circ+\angle T(j\omega_{gc})\) at the frequency where \(|T|=1\). About 60° gives a clean step response. 45° gives noticeable ringing. Near 0° the amplifier oscillates.</li>
+    <li>Unity-gain feedback (\(\beta=1\)) has the most loop gain and is the hardest case to stabilise.</li>
+    <li><b>Dominant-pole (Miller) compensation:</b> a capacitor \(C_c\) across the second gain stage is multiplied by the Miller effect. It moves the first pole down and the second pole up (pole splitting), so the gain falls below 1 before the second pole adds phase. Results: \(f_T=\dfrac{g_{m1}}{2\pi C_c}\) and slew rate \(=\dfrac{I_{tail}}{C_c}\).</li>
+  </ul></div>
+  <div class="sim" data-sim="gbw"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The classic 741 op-amp has a 30 pF Miller capacitor built in, which sets its 1 MHz unity-gain frequency. Every quartz watch and microcontroller runs from a crystal oscillator, most commonly at 32.768 kHz because that is \(2^{15}\) Hz and divides down to exactly 1 Hz. An anti-aliasing filter in front of an analog-to-digital converter is an active low-pass filter of the kind described here.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Phase margin belongs to the loop gain, not to the closed-loop gain.</li>
+    <li>More feedback (a lower closed-loop gain) makes an amplifier less stable, not more.</li>
+    <li>A Wien-bridge oscillator needs a gain of exactly 3 to sustain oscillation, and slightly more to start.</li>
+    <li>The compensation capacitor that buys stability also limits the slew rate.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>An op-amp has DC gain \(10^5\) and a single pole at 10 Hz. It is used as a non-inverting amplifier with gain 100. Find the closed-loop bandwidth.</summary><div class="sol">
+    <p>\(f_T=10^5\times10=1\text{ MHz}\). Bandwidth \(=1\text{ MHz}/100=10\text{ kHz}\). In the simulation: gain 100, \(f_T=1\text{ MHz}\).</p>
+  </div></details>
+  <details class="q"><summary>A Wien-bridge oscillator uses \(R=10\text{ k}\Omega\) and \(C=10\text{ nF}\). Find the frequency of oscillation and the ratio \(R_2/R_1\) of the gain-setting resistors.</summary><div class="sol">
+    <p>\(f_0=\dfrac{1}{2\pi\times10^4\times10^{-8}}=1.59\text{ kHz}\). The gain \(1+R_2/R_1\) must be 3, so \(R_2/R_1=2\).</p>
+  </div></details>
+</section>

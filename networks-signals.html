@@ -1,0 +1,220 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 2 · roughly 14 to 18 marks across networks and signals</p>
+  <h1>Networks, Signals and Systems</h1>
+  <p class="lede">The language of the whole paper. Phasors, Laplace, Fourier and convolution return in analog circuits, control systems and communications, so time spent here is repaid three times.</p>
+  <p class="ref"><b>Standard references:</b> Hayt, Kemmerly and Durbin, <i>Engineering Circuit Analysis</i>; Van Valkenburg, <i>Network Analysis</i>; Oppenheim and Willsky, <i>Signals and Systems</i>; Oppenheim and Schafer, <i>Discrete-Time Signal Processing</i>.</p>
+</header>
+
+<section class="topic" id="n-circuit">
+  <h2>Circuit analysis</h2>
+  <p class="syl">Syllabus: node and mesh analysis, superposition, Thevenin’s theorem, Norton’s theorem, reciprocity.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Node analysis</b> writes KCL at \(N-1\) nodes. A voltage source between two non-reference nodes makes a supernode. <b>Mesh analysis</b> writes KVL around \(B-N+1\) meshes. A current source shared by two meshes makes a supermesh.</li>
+    <li><b>Superposition</b> holds for linear circuits. Take one independent source at a time, replacing the other voltage sources by short circuits and the other current sources by open circuits. Dependent sources stay in the circuit.</li>
+    <li><b>Thevenin:</b> \(V_{th}\) is the open-circuit voltage. \(R_{th}=V_{oc}/I_{sc}\), or the resistance seen with independent sources killed. If the circuit has dependent sources, apply a test source to find \(R_{th}\).</li>
+    <li><b>Norton:</b> \(I_N=I_{sc}\) in parallel with \(R_N=R_{th}\). Source transformation: \(V_{th}=I_NR_{th}\).</li>
+    <li><b>Maximum power transfer:</b> with a fixed source, the load receives maximum power when \(R_L=R_{th}\), and then \(P_{max}=\dfrac{V_{th}^2}{4R_{th}}\). In AC: \(Z_L=Z_{th}^*\). If the load can only be a resistor: \(R_L=|Z_{th}|\).</li>
+    <li><b>Reciprocity:</b> in a linear, bilateral network with a single source, swapping the positions of the source and the response meter leaves the ratio of response to excitation unchanged.</li>
+    <li><b>Star and delta</b> with equal resistors: \(R_\Delta=3R_Y\). In general each star resistor is the product of the two adjacent delta resistors divided by the sum of all three.</li>
+  </ul></div>
+  <div class="sim" data-sim="maxpower"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A car battery’s internal resistance is its Thevenin resistance. When the starter motor draws a few hundred amperes, the terminal voltage sags and the headlights dim. Radio systems match the antenna to the receiver (50 Ω or 75 Ω) because a weak signal needs maximum power transfer. Power grids do the opposite and keep the source resistance far below the load, because they care about efficiency, not about extracting maximum power.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Superposition gives voltages and currents, not powers. Add the currents first, then compute power.</li>
+    <li>Never switch off a dependent source.</li>
+    <li>If the question varies \(R_{th}\) with the load fixed, the best choice is \(R_{th}=0\), not \(R_{th}=R_L\).</li>
+    <li>A circuit with only dependent sources has \(V_{th}=0\) but a non-zero \(R_{th}\), which can even be negative.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A network has \(V_{th}=12\text{ V}\) and \(R_{th}=6\ \Omega\). Find the maximum power it can deliver to a resistive load, and the efficiency then.</summary><div class="sol">
+    <p>\(P_{max}=\dfrac{12^2}{4\times6}=6\text{ W}\) at \(R_L=6\ \Omega\). The source resistance also dissipates 6 W, so the efficiency is 50 %.</p>
+  </div></details>
+  <details class="q"><summary>Three 9 Ω resistors are connected in delta. Find the equivalent star resistors.</summary><div class="sol">
+    <p>Each star resistor \(=\dfrac{9\times9}{9+9+9}=3\ \Omega\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="n-sss">
+  <h2>Sinusoidal steady state</h2>
+  <p class="syl">Syllabus: phasors, complex power, maximum power transfer.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Phasor:</b> \(v(t)=V_m\cos(\omega t+\theta)\leftrightarrow\mathbf V=V_m\angle\theta\). Differentiation becomes multiplication by \(j\omega\).</li>
+    <li><b>Impedances:</b> \(Z_R=R\), \(Z_L=j\omega L\), \(Z_C=\dfrac{1}{j\omega C}\). In an inductor the current lags the voltage by 90°. In a capacitor it leads by 90°.</li>
+    <li><b>Complex power</b> with rms phasors: \(\mathbf S=\mathbf V\mathbf I^*=P+jQ\). \(P=V_{rms}I_{rms}\cos\phi\) in watts, \(Q=V_{rms}I_{rms}\sin\phi\) in VAR, \(|\mathbf S|=V_{rms}I_{rms}\) in VA. Power factor \(=\cos\phi=P/|\mathbf S|\).</li>
+    <li>An inductive load has \(Q\gt0\) and a lagging power factor. A capacitive load has \(Q\lt0\) and a leading power factor.</li>
+    <li><b>Series RLC resonance:</b> \(\omega_0=\dfrac{1}{\sqrt{LC}}\), impedance is minimum and equal to \(R\). \(Q=\dfrac{\omega_0L}{R}=\dfrac1R\sqrt{\dfrac LC}\). Bandwidth \(=\dfrac{\omega_0}{Q}=\dfrac RL\) rad/s. At resonance \(|V_L|=|V_C|=QV\).</li>
+    <li><b>Parallel RLC resonance:</b> same \(\omega_0\), impedance is maximum. \(Q=\dfrac{R}{\omega_0L}=R\sqrt{\dfrac CL}\). Bandwidth \(=\dfrac{1}{RC}\) rad/s. The branch currents are \(Q\) times the source current.</li>
+    <li><b>Coupled coils:</b> \(M=k\sqrt{L_1L_2}\). Series aiding: \(L_1+L_2+2M\). Series opposing: \(L_1+L_2-2M\). Ideal transformer with turns ratio \(n=N_1/N_2\): a load \(Z_L\) on the secondary looks like \(n^2Z_L\) from the primary.</li>
+  </ul></div>
+  <div class="sim" data-sim="phasor"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A factory full of induction motors draws a lagging current. The reactive part does no work but still heats cables and transformers, so the utility charges a penalty for a low power factor. Plants install capacitor banks, often switched automatically, to supply the reactive power locally. A radio selects one station from hundreds by tuning an LC circuit to resonance at that station’s frequency.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>With peak phasors \(P=\tfrac12V_mI_m\cos\phi\). With rms phasors there is no factor of \(\tfrac12\). Read which one the question gives.</li>
+    <li>\(\mathbf S=\mathbf V\mathbf I^*\), with the conjugate. Using \(\mathbf V\mathbf I\) gives the wrong sign of \(Q\).</li>
+    <li>“Lagging” and “leading” always describe the current relative to the voltage.</li>
+    <li>The \(Q\) formulas for series and parallel resonance are reciprocals of each other. Do not mix them.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A load draws 10 A rms from a 230 V rms, 50 Hz supply at a power factor of 0.8 lagging. Find \(P\), \(Q\), \(|S|\), and the parallel capacitance that corrects the power factor to unity.</summary><div class="sol">
+    <p>\(|S|=2300\text{ VA}\). \(P=2300\times0.8=1840\text{ W}\). \(Q=2300\times0.6=1380\text{ VAR}\).</p>
+    <p>The capacitor must supply 1380 VAR: \(C=\dfrac{Q}{\omega V^2}=\dfrac{1380}{2\pi(50)(230)^2}\approx83\ \mu\text{F}\). In the simulation this is \(|Z|=23\ \Omega\), \(\phi=37^\circ\).</p>
+  </div></details>
+  <details class="q"><summary>A series RLC circuit has \(R=10\ \Omega\), \(L=10\text{ mH}\), \(C=1\ \mu\text{F}\). Find \(\omega_0\), \(Q\) and the bandwidth.</summary><div class="sol">
+    <p>\(\omega_0=1/\sqrt{10^{-2}\times10^{-6}}=10^4\text{ rad/s}\). \(Q=\omega_0L/R=10\). Bandwidth \(=R/L=1000\text{ rad/s}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="n-transient">
+  <h2>Transients and two-ports</h2>
+  <p class="syl">Syllabus: time and frequency domain analysis of RL, RC and RLC circuits, solution of network equations using Laplace transform, linear 2-port network parameters, wye-delta transformation.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Continuity:</b> capacitor voltage and inductor current cannot jump unless there is an impulse. At \(t=0^+\) an uncharged capacitor acts as a short and an unenergised inductor as an open. At DC steady state the capacitor is open and the inductor is a short.</li>
+    <li><b>First-order circuits:</b> \[x(t)=x(\infty)+\big[x(0^+)-x(\infty)\big]e^{-t/\tau}\] with \(\tau=R_{th}C\) or \(\tau=L/R_{th}\), where \(R_{th}\) is the resistance seen by the capacitor or inductor.</li>
+    <li><b>Series RLC:</b> \(s^2+\dfrac RLs+\dfrac{1}{LC}=0\). \(\alpha=\dfrac{R}{2L}\), \(\omega_0=\dfrac{1}{\sqrt{LC}}\), \(\zeta=\dfrac{\alpha}{\omega_0}=\dfrac R2\sqrt{\dfrac CL}\). <b>Parallel RLC:</b> \(\alpha=\dfrac{1}{2RC}\), \(\zeta=\dfrac{1}{2R}\sqrt{\dfrac LC}\).</li>
+    <li>\(\zeta\gt1\) overdamped, \(\zeta=1\) critically damped, \(\zeta\lt1\) underdamped with \(\omega_d=\omega_0\sqrt{1-\zeta^2}\).</li>
+    <li><b>Laplace circuit models:</b> an inductor becomes \(sL\) in series with a voltage source \(Li(0^-)\). A capacitor becomes \(\dfrac{1}{sC}\) in series with \(\dfrac{v(0^-)}{s}\).</li>
+    <li><b>Initial value:</b> \(x(0^+)=\lim_{s\to\infty}sX(s)\). <b>Final value:</b> \(x(\infty)=\lim_{s\to0}sX(s)\), valid only if all poles of \(sX(s)\) are in the left half-plane.</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Two-port set</th><th>Defining equations</th><th>Reciprocal if</th><th>Symmetric if</th><th>Add when connected in</th></tr></thead>
+    <tbody>
+      <tr><td>z</td><td>\(V_1=z_{11}I_1+z_{12}I_2\), \(V_2=z_{21}I_1+z_{22}I_2\)</td><td>\(z_{12}=z_{21}\)</td><td>\(z_{11}=z_{22}\)</td><td>series</td></tr>
+      <tr><td>y</td><td>\(I_1=y_{11}V_1+y_{12}V_2\), \(I_2=y_{21}V_1+y_{22}V_2\)</td><td>\(y_{12}=y_{21}\)</td><td>\(y_{11}=y_{22}\)</td><td>parallel</td></tr>
+      <tr><td>h</td><td>\(V_1=h_{11}I_1+h_{12}V_2\), \(I_2=h_{21}I_1+h_{22}V_2\)</td><td>\(h_{12}=-h_{21}\)</td><td>\(h_{11}h_{22}-h_{12}h_{21}=1\)</td><td>series-parallel</td></tr>
+      <tr><td>ABCD</td><td>\(V_1=AV_2-BI_2\), \(I_1=CV_2-DI_2\)</td><td>\(AD-BC=1\)</td><td>\(A=D\)</td><td>cascade (multiply)</td></tr>
+    </tbody>
+  </table></div></div>
+  <div class="sim" data-sim="rlc"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A camera flash charges a capacitor through a resistor, and the “ready” light comes on after a few time constants. Opening a switch in series with a relay coil or an ignition coil produces a voltage spike because the inductor current cannot stop instantly. That spike fires a spark plug, and it is the reason a flyback diode is placed across every relay coil driven by a transistor.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>\(\tau\) uses the Thevenin resistance seen from the storage element with sources killed, not simply the nearest resistor.</li>
+    <li>The final value theorem gives nonsense for a sinusoid or a growing exponential. Check the poles first.</li>
+    <li>In the ABCD equations \(I_2\) is defined as entering port 2, which is why the equations carry minus signs.</li>
+    <li>After one time constant the response has covered 63.2 % of its total change, not 50 %.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A 10 V step is applied to a series RC circuit with \(R=1\text{ k}\Omega\), \(C=1\ \mu\text{F}\), capacitor initially uncharged. Find \(v_C\) at \(t=1\text{ ms}\).</summary><div class="sol">
+    <p>\(\tau=RC=1\text{ ms}\). \(v_C=10(1-e^{-1})=6.32\text{ V}\).</p>
+  </div></details>
+  <details class="q"><summary>A series RLC circuit has \(L=10\text{ mH}\) and \(C=100\ \mu\text{F}\). What resistance gives critical damping?</summary><div class="sol">
+    <p>\(\zeta=1\) needs \(R=2\sqrt{L/C}=2\sqrt{100}=20\ \Omega\). Set these values in the simulation: the solid and dashed curves coincide at \(R=20\ \Omega\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="n-lti">
+  <h2>LTI systems</h2>
+  <p class="syl">Syllabus: definition and properties, causality, stability, impulse response, convolution, poles and zeroes, frequency response, group delay, phase delay.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A system that is <b>linear</b> (superposition holds) and <b>time-invariant</b> (a delayed input gives the same output, delayed) is completely described by its impulse response \(h(t)\): \[y(t)=x(t)*h(t)=\int_{-\infty}^{\infty}x(\tau)\,h(t-\tau)\,d\tau\]</li>
+    <li><b>Causal:</b> \(h(t)=0\) for \(t\lt0\). <b>BIBO stable:</b> \(\int|h(t)|\,dt\lt\infty\), or \(\sum|h[n]|\lt\infty\) in discrete time. <b>Memoryless:</b> \(h(t)=k\,\delta(t)\).</li>
+    <li><b>Convolution facts:</b> commutative, associative, distributive. \(x(t)*\delta(t-t_0)=x(t-t_0)\). Durations add. Areas multiply. The step response is the running integral of \(h\).</li>
+    <li>For a rational transfer function, a causal system is stable only if every pole lies in the left half-plane. In discrete time: inside the unit circle.</li>
+    <li><b>Frequency response</b> \(H(j\omega)=H(s)\big|_{s=j\omega}\). A sinusoid in gives a sinusoid out: \(\cos\omega_0t\to|H(j\omega_0)|\cos\big(\omega_0t+\angle H(j\omega_0)\big)\).</li>
+    <li>With phase \(\theta(\omega)=\angle H(j\omega)\): <b>phase delay</b> \(\tau_p=-\dfrac{\theta(\omega)}{\omega}\) and <b>group delay</b> \(\tau_g=-\dfrac{d\theta}{d\omega}\). Phase delay is the delay of the carrier. Group delay is the delay of the envelope.</li>
+    <li><b>Distortionless transmission:</b> constant \(|H|\) and linear phase \(\theta=-\omega t_0\), so every frequency is delayed by the same \(t_0\).</li>
+    <li><b>Minimum-phase:</b> all poles and zeros in the left half-plane. <b>All-pass:</b> \(|H|=1\) at every frequency, with zeros that mirror the poles across the \(j\omega\) axis.</li>
+  </ul></div>
+  <div class="sim" data-sim="convolution"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Clap once in a large hall and what you hear is the hall’s impulse response. Any music played there reaches your ears as the music convolved with that response, which is how recording software adds a “concert hall” effect to a studio track. A blurred photograph is the sharp image convolved with the blur of the lens or of the camera’s motion.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>\(y(t)=x(t)+1\) is not linear, because zero input gives non-zero output. \(y(t)=t\,x(t)\) and \(y(t)=x(2t)\) are linear but time-varying.</li>
+    <li>An ideal integrator, \(h(t)=u(t)\), is not BIBO stable: a bounded step input gives an unbounded ramp.</li>
+    <li>When a question asks for the delay of a modulated signal’s envelope, use group delay, not phase delay.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Find \(y(t)=u(t)*e^{-2t}u(t)\).</summary><div class="sol">
+    <p>\(y(t)=\displaystyle\int_0^te^{-2\tau}d\tau=\tfrac12\big(1-e^{-2t}\big)u(t)\). It is the step response of \(H(s)=\dfrac{1}{s+2}\).</p>
+  </div></details>
+  <details class="q"><summary>Convolve a unit-height pulse on \(0\le t\le1\) with itself. Describe the result.</summary><div class="sol">
+    <p>A triangle that starts at \(t=0\), peaks at height 1 at \(t=1\), and returns to zero at \(t=2\). Starts add (0 + 0), durations add (1 + 1), and the area is the product of the areas (1 × 1). Select “Pulse, width 1” for both signals in the simulation to watch it form.</p>
+  </div></details>
+</section>
+
+<section class="topic" id="n-ct">
+  <h2>Continuous-time signals</h2>
+  <p class="syl">Syllabus: Fourier series and Fourier transform, Nyquist sampling theorem, sampling and reconstruction.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Fourier series</b> of a signal with period \(T\), \(\omega_0=2\pi/T\): \[x(t)=\sum_{k=-\infty}^{\infty}c_k\,e^{jk\omega_0t},\qquad c_k=\frac1T\int_Tx(t)\,e^{-jk\omega_0t}\,dt\]</li>
+    <li><b>Symmetry:</b> even signal: cosine terms only. Odd signal: sine terms only. Half-wave symmetry, \(x(t+T/2)=-x(t)\): odd harmonics only. Parseval: \(\dfrac1T\displaystyle\int_T|x|^2dt=\sum|c_k|^2\).</li>
+    <li><b>Fourier transform:</b> \(X(j\omega)=\displaystyle\int x(t)\,e^{-j\omega t}dt\), \(\;x(t)=\dfrac{1}{2\pi}\displaystyle\int X(j\omega)\,e^{j\omega t}d\omega\).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>\(x(t)\)</th><th>\(X(j\omega)\)</th><th>Property</th><th>Time</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>\(\delta(t)\)</td><td>\(1\)</td><td>Time shift</td><td>\(x(t-t_0)\)</td><td>\(e^{-j\omega t_0}X\)</td></tr>
+      <tr><td>\(1\)</td><td>\(2\pi\delta(\omega)\)</td><td>Modulation</td><td>\(e^{j\omega_0t}x(t)\)</td><td>\(X(j(\omega-\omega_0))\)</td></tr>
+      <tr><td>\(e^{-at}u(t)\)</td><td>\(\dfrac{1}{a+j\omega}\)</td><td>Scaling</td><td>\(x(at)\)</td><td>\(\dfrac{1}{|a|}X(j\omega/a)\)</td></tr>
+      <tr><td>\(e^{-a|t|}\)</td><td>\(\dfrac{2a}{a^2+\omega^2}\)</td><td>Differentiation</td><td>\(dx/dt\)</td><td>\(j\omega X\)</td></tr>
+      <tr><td>pulse, width \(\tau\), height 1</td><td>\(\tau\,\dfrac{\sin(\omega\tau/2)}{\omega\tau/2}\)</td><td>Convolution</td><td>\(x*h\)</td><td>\(XH\)</td></tr>
+      <tr><td>\(\cos\omega_0t\)</td><td>\(\pi[\delta(\omega-\omega_0)+\delta(\omega+\omega_0)]\)</td><td>Multiplication</td><td>\(xy\)</td><td>\(\dfrac{1}{2\pi}X*Y\)</td></tr>
+      <tr><td>\(u(t)\)</td><td>\(\pi\delta(\omega)+\dfrac{1}{j\omega}\)</td><td>Parseval</td><td>\(\int|x|^2dt\)</td><td>\(\dfrac{1}{2\pi}\int|X|^2d\omega\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>Sampling theorem:</b> a signal with no frequencies above \(f_m\) is recovered exactly from samples taken at \(f_s\gt2f_m\). The rate \(2f_m\) is the Nyquist rate.</li>
+    <li>Sampling repeats the spectrum: \(X_s(f)=f_s\sum_kX(f-kf_s)\). Reconstruction is an ideal low-pass filter with cut-off \(f_s/2\), which in time is sinc interpolation.</li>
+    <li><b>Aliasing:</b> if \(f_s\lt2f_m\), a component at \(f\) appears at \(|f-kf_s|\) for the integer \(k\) that brings it into \([0,f_s/2]\).</li>
+    <li>Bandwidths under operations: multiplying two signals adds their bandwidths. Convolving them keeps the smaller one. Squaring doubles it.</li>
+  </ul></div>
+  <div class="sim" data-sim="fourier"></div>
+  <div class="sim" data-sim="sampling"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Audio CDs sample at 44.1 kHz because human hearing stops near 20 kHz. In films, the wheels of a moving car sometimes appear to stand still or turn backwards: the camera samples at 24 frames per second, and the wheel’s rotation is aliased. A stroboscopic tachometer uses the same effect on purpose to “freeze” a rotating shaft. The sharp edges of a digital clock signal contain strong odd harmonics, which is why fast logic boards radiate interference far above the clock frequency.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Nyquist <i>rate</i> is \(2f_m\), a property of the signal. Nyquist <i>frequency</i> is \(f_s/2\), a property of the sampler.</li>
+    <li>Sampling a sinusoid at exactly \(2f_m\) can return all zeros. The inequality is strict.</li>
+    <li>Watch \(\omega\) against \(f\): formulas in \(\omega\) carry factors of \(2\pi\) that formulas in \(f\) do not.</li>
+    <li>Check which sinc the question uses: \(\operatorname{sinc}(x)=\dfrac{\sin\pi x}{\pi x}\) or \(\dfrac{\sin x}{x}\).</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>\(x(t)=\cos(200\pi t)+2\cos(600\pi t)\). Find the Nyquist rate. If it is sampled at 500 Hz, which frequencies appear after ideal reconstruction?</summary><div class="sol">
+    <p>The components are at 100 Hz and 300 Hz, so the Nyquist rate is 600 Hz.</p>
+    <p>At \(f_s=500\text{ Hz}\) the pass band is 0 to 250 Hz. The 100 Hz tone is fine. The 300 Hz tone aliases to \(|300-500|=200\text{ Hz}\). The output contains 100 Hz and 200 Hz.</p>
+  </div></details>
+  <details class="q"><summary>Find the Nyquist rate of \(x(t)=\operatorname{sinc}^2(100t)\), where \(\operatorname{sinc}(x)=\dfrac{\sin\pi x}{\pi x}\).</summary><div class="sol">
+    <p>\(\operatorname{sinc}(100t)\) has a rectangular spectrum from \(-50\) to \(50\) Hz. Squaring in time convolves the spectrum with itself, so it now extends to 100 Hz. Nyquist rate \(=200\text{ Hz}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="n-dt">
+  <h2>Discrete-time signals</h2>
+  <p class="syl">Syllabus: DTFT, DFT, z-transform, FIR and IIR filter design.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>DTFT:</b> \(X(e^{j\omega})=\sum_nx[n]\,e^{-j\omega n}\). It is always periodic in \(\omega\) with period \(2\pi\). \(\omega=\pi\) is the highest frequency a sequence can hold.</li>
+    <li><b>z-transform:</b> \(X(z)=\sum_nx[n]\,z^{-n}\), together with its region of convergence (ROC). \(a^nu[n]\leftrightarrow\dfrac{1}{1-az^{-1}}\) for \(|z|\gt|a|\). \(-a^nu[-n-1]\) has the same \(X(z)\) but ROC \(|z|\lt|a|\).</li>
+    <li>Causal sequence: ROC is outside the outermost pole. Stable: ROC includes the unit circle. Causal and stable: all poles inside the unit circle.</li>
+    <li><b>Properties:</b> delay \(x[n-k]\leftrightarrow z^{-k}X(z)\). \(n\,x[n]\leftrightarrow-z\dfrac{dX}{dz}\). Convolution becomes a product. Initial value \(x[0]=\lim_{z\to\infty}X(z)\). Final value \(\lim_{z\to1}(z-1)X(z)\).</li>
+    <li><b>DFT:</b> \(X[k]=\sum_{n=0}^{N-1}x[n]\,e^{-j2\pi kn/N}\). It samples the DTFT at \(\omega=2\pi k/N\). Bin spacing is \(f_s/N\). Multiplying two DFTs gives circular convolution. Zero-padding interpolates the spectrum but adds no real resolution.</li>
+    <li><b>FIR filters:</b> finite impulse response, no feedback, always stable. Exactly linear phase if the coefficients are symmetric or antisymmetric, \(h[n]=\pm h[N-1-n]\). Designed by windowing the ideal response.</li>
+    <li>Windows trade main-lobe width for side-lobe level. Peak side lobe: rectangular −13 dB, Hann −31 dB, Hamming −41 dB, Blackman −57 dB. A lower side lobe costs a wider transition band.</li>
+    <li><b>IIR filters:</b> feedback, poles away from the origin, far fewer coefficients for the same sharpness, but no exact linear phase and possible instability. Designed from analog prototypes (Butterworth, Chebyshev).</li>
+    <li><b>Impulse invariance:</b> \(z=e^{sT}\), aliases the frequency response. <b>Bilinear transform:</b> \(s=\dfrac2T\,\dfrac{1-z^{-1}}{1+z^{-1}}\), no aliasing but warps frequency: \(\Omega=\dfrac2T\tan\dfrac\omega2\).</li>
+  </ul></div>
+  <div class="sim" data-sim="polezero"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The equaliser in a music app is a bank of digital filters. An ECG machine removes 50 Hz mains hum with a notch filter, which is a pair of zeros on the unit circle at the angle corresponding to 50 Hz. Noise-cancelling headphones run an adaptive FIR filter that reshapes itself thousands of times a second.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>A z-transform without its ROC is ambiguous. The same expression can be a causal stable sequence or an anti-causal one.</li>
+    <li>The DFT treats the block as one period of a periodic signal. If the block does not hold a whole number of cycles, energy leaks into neighbouring bins.</li>
+    <li>A pole exactly at \(z=1\) is on the unit circle, so the system is not BIBO stable.</li>
+    <li>The final value theorem in \(z\) needs all poles of \((z-1)X(z)\) inside the unit circle.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A causal filter has \(H(z)=\dfrac{1}{1-0.5z^{-1}}\). Find \(h[n]\), check stability, and decide whether it is low-pass or high-pass.</summary><div class="sol">
+    <p>\(h[n]=(0.5)^nu[n]\). The pole at \(z=0.5\) is inside the unit circle, so it is stable.</p>
+    <p>At \(\omega=0\): \(H=1/(1-0.5)=2\). At \(\omega=\pi\) (\(z=-1\)): \(H=1/1.5=0.667\). The gain falls with frequency, so it is low-pass. The simulation always places poles in conjugate pairs, so pole radius 0.5 at angle 0° with zero radius 0 shows this filter applied twice: the same low-pass shape with double the dB values.</p>
+  </div></details>
+  <details class="q"><summary>Find the 8-point DFT of \(x[n]=1\) for \(n=0\) to 7.</summary><div class="sol">
+    <p>\(X[0]=8\) and \(X[k]=0\) for \(k=1\) to 7. A constant has only a DC component, and each other bin sums a full set of roots of unity, which is zero.</p>
+  </div></details>
+</section>

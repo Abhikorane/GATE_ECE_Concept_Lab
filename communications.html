@@ -1,0 +1,199 @@
+<header class="sec-hd">
+  <p class="eyebrow">Section 7 · roughly 9 to 13 marks</p>
+  <h1>Communications</h1>
+  <p class="lede">Often the heaviest core section, and the one that leans most on probability and Fourier transforms. Learn each modulation scheme as a picture in time and a picture in frequency, then the formulas are easy to rebuild.</p>
+  <p class="ref"><b>Standard references:</b> Haykin, <i>Communication Systems</i>; Lathi and Ding, <i>Modern Digital and Analog Communication Systems</i>; Proakis and Salehi, <i>Communication Systems Engineering</i>.</p>
+</header>
+
+<section class="topic" id="k-random">
+  <h2>Random processes</h2>
+  <p class="syl">Syllabus: autocorrelation and power spectral density, properties of white noise, filtering of random signals through LTI systems.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>A <b>random process</b> \(X(t)\) is a family of waveforms, one per outcome. Mean \(\mu_X(t)=E[X(t)]\). Autocorrelation \(R_X(t_1,t_2)=E[X(t_1)X(t_2)]\).</li>
+    <li><b>Wide-sense stationary (WSS):</b> the mean is constant and the autocorrelation depends only on the lag \(\tau=t_1-t_2\). <b>Ergodic:</b> time averages over one waveform equal the ensemble averages.</li>
+    <li><b>Properties of \(R_X(\tau)\)</b> for a real WSS process: \(R_X(0)=E[X^2]\) is the total average power. It is even, \(R_X(-\tau)=R_X(\tau)\). Its maximum is at zero, \(|R_X(\tau)|\le R_X(0)\). If there is no periodic part, \(R_X(\infty)=\mu_X^2\), so the variance is \(R_X(0)-R_X(\infty)\).</li>
+    <li><b>Wiener–Khinchin theorem:</b> the power spectral density is the Fourier transform of the autocorrelation, \(S_X(f)=\mathcal F\{R_X(\tau)\}\). It is real, even and non-negative, and \(\displaystyle\int S_X(f)\,df=R_X(0)\).</li>
+    <li><b>White noise:</b> \(S(f)=\dfrac{N_0}{2}\) at all frequencies (two-sided), so \(R(\tau)=\dfrac{N_0}{2}\delta(\tau)\). Any two different instants are uncorrelated. Its total power is infinite, so it is an idealisation that becomes physical only after filtering.</li>
+    <li><b>Through an LTI system</b> \(H(f)\): \(\mu_Y=\mu_XH(0)\) and \[S_Y(f)=|H(f)|^2\,S_X(f)\]</li>
+    <li>White noise through an ideal low-pass filter of bandwidth \(B\): output power \(N_0B\), and \(R_Y(\tau)=N_0B\,\operatorname{sinc}(2B\tau)\). Samples taken \(\dfrac{1}{2B}\) apart are uncorrelated.</li>
+    <li>White noise through an RC low-pass filter: output power \(\dfrac{N_0}{4RC}\). The <b>noise-equivalent bandwidth</b> is \(\dfrac{1}{4RC}=\dfrac\pi2f_{3dB}\).</li>
+    <li>A Gaussian process stays Gaussian through any linear system. For jointly Gaussian variables, uncorrelated implies independent.</li>
+    <li><b>Narrow-band noise:</b> \(n(t)=n_I(t)\cos\omega_ct-n_Q(t)\sin\omega_ct\). \(n_I\) and \(n_Q\) each have the same power as \(n\). The envelope is Rayleigh distributed and the phase is uniform. With a sinusoid added the envelope is Rician.</li>
+    <li><b>Thermal noise</b> of a resistor: available power \(kTB\), open-circuit mean-square voltage \(4kTRB\).</li>
+  </ul></div>
+  <div class="sim" data-sim="noise"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>The hiss of an FM radio tuned between stations is thermal noise from the receiver’s front end, shaped by its filters. Averaging \(N\) readings of a noisy sensor reduces the noise by \(\sqrt N\) because averaging is a low-pass filter, and it only works when successive readings are uncorrelated, which is the property the autocorrelation plot shows.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>\(N_0/2\) is the two-sided density. The power in a bandwidth \(B\) at baseband is \(\dfrac{N_0}{2}\times2B=N_0B\).</li>
+    <li>\(R_X(0)\) is total power, including the DC part \(\mu_X^2\). Variance is what remains after subtracting it.</li>
+    <li>When the density is given against \(\omega\), integrate with \(\dfrac{d\omega}{2\pi}\).</li>
+    <li>Uncorrelated implies independent only for Gaussian variables.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>White noise with \(N_0/2=10^{-6}\text{ W/Hz}\) passes through an ideal low-pass filter of bandwidth 5 kHz. Find the output noise power.</summary><div class="sol">
+    <p>\(P=N_0B=2\times10^{-6}\times5000=10\text{ mW}\).</p>
+  </div></details>
+  <details class="q"><summary>A WSS process has \(R_X(\tau)=16+9e^{-2|\tau|}\). Find its mean, total power and variance.</summary><div class="sol">
+    <p>\(R_X(\infty)=16=\mu_X^2\), so the mean is \(\pm4\). Total power \(R_X(0)=25\). Variance \(=25-16=9\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="k-analog">
+  <h2>Analog communications</h2>
+  <p class="syl">Syllabus: amplitude modulation and demodulation, angle modulation and demodulation, spectra of AM and FM, superheterodyne receivers.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>AM (DSB with carrier):</b> \(s(t)=A_c[1+\mu\,m(t)]\cos\omega_ct\) with \(|m(t)|\le1\). From the envelope: \(\mu=\dfrac{A_{max}-A_{min}}{A_{max}+A_{min}}\).</li>
+    <li>For a single tone: a carrier of amplitude \(A_c\) and two sidebands of amplitude \(\dfrac{\mu A_c}{2}\) at \(f_c\pm f_m\). Bandwidth \(2f_m\). \[P_t=P_c\left(1+\frac{\mu^2}{2}\right),\qquad\eta=\frac{\mu^2}{2+\mu^2}\le33.3\,\%\]</li>
+    <li>Several tones: \(\mu_t=\sqrt{\mu_1^2+\mu_2^2+\dots}\).</li>
+    <li><b>DSB-SC:</b> \(m(t)\cos\omega_ct\). Bandwidth \(2f_m\), no carrier power, needs coherent detection. A phase error \(\phi\) in the local carrier scales the output by \(\cos\phi\). <b>SSB:</b> one sideband only, bandwidth \(f_m\). <b>VSB:</b> one sideband plus a vestige of the other, used for television.</li>
+    <li><b>Envelope detector</b> (needs \(\mu\le1\)): choose \(\dfrac{1}{f_c}\ll RC\ll\dfrac{1}{f_m}\). To follow the envelope without diagonal clipping: \(RC\le\dfrac{\sqrt{1-\mu^2}}{2\pi f_m\mu}\).</li>
+    <li><b>Angle modulation:</b> \(s(t)=A_c\cos[\omega_ct+\phi(t)]\). PM: \(\phi=k_p\,m(t)\). FM: instantaneous frequency \(f_i=f_c+k_f\,m(t)\), so \(\phi=2\pi k_f\displaystyle\int m\,dt\).</li>
+    <li><b>Tone-modulated FM:</b> deviation \(\Delta f=k_fA_m\), modulation index \(\beta=\dfrac{\Delta f}{f_m}\), and \[s(t)=A_c\sum_{n=-\infty}^{\infty}J_n(\beta)\cos[2\pi(f_c+nf_m)t]\] Total power is \(A_c^2/2\) for every \(\beta\), since \(\sum J_n^2(\beta)=1\).</li>
+    <li><b>Carson’s rule:</b> \(B\approx2(\Delta f+f_m)=2(\beta+1)f_m\). Narrow-band FM (\(\beta\ll1\)) has bandwidth \(2f_m\).</li>
+    <li>A <b>frequency multiplier</b> by \(n\) multiplies \(f_c\), \(\Delta f\) and \(\beta\) by \(n\). A <b>mixer</b> shifts \(f_c\) only.</li>
+    <li><b>FM demodulation:</b> frequency discriminator (differentiator followed by envelope detector) or phase-locked loop. Pre-emphasis at the transmitter and de-emphasis at the receiver reduce high-frequency noise.</li>
+    <li><b>Output SNR relative to baseband (figure of merit):</b> DSB-SC and SSB: 1. AM with envelope detection, single tone: \(\dfrac{\mu^2}{2+\mu^2}\). FM, single tone: \(\dfrac32\beta^2\), above threshold.</li>
+    <li><b>Superheterodyne receiver:</b> RF amplifier, mixer with local oscillator, IF amplifier, detector. \(f_{LO}=f_s+f_{IF}\) (oscillator above the signal). <b>Image frequency</b> \(=f_s+2f_{IF}\), rejected by the RF stage. The fixed IF stage gives the selectivity. Typical IF: 455 kHz for AM, 10.7 MHz for FM.</li>
+  </ul></div>
+  <div class="sim" data-sim="am"></div>
+  <div class="sim" data-sim="fm"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A car radio is a superheterodyne receiver: turning the dial changes only the local oscillator, and one fixed filter does all the station selection. FM sounds cleaner than AM because most noise changes a signal’s amplitude, which an FM receiver ignores. Broadcast FM spends about 200 kHz per station to buy that quality, twenty times what AM uses.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>AM power uses \(\mu^2/2\). The sideband amplitude uses \(\mu/2\). Do not swap them.</li>
+    <li>With the local oscillator above the signal, the image is above the signal by \(2f_{IF}\). If the question puts the oscillator below, the image is below.</li>
+    <li>FM bandwidth depends on both \(\Delta f\) and \(f_m\). Doubling the message amplitude doubles \(\Delta f\), not the bandwidth.</li>
+    <li>In PM the deviation is proportional to \(f_m\). In FM it is not.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>An AM transmitter has a carrier power of 1 kW and \(\mu=0.6\). Find the total power, the power in each sideband and the efficiency.</summary><div class="sol">
+    <p>\(P_t=1000(1+0.18)=1180\text{ W}\). Each sideband carries 90 W. \(\eta=\dfrac{0.36}{2.36}=15.3\,\%\).</p>
+  </div></details>
+  <details class="q"><summary>An FM signal has \(\Delta f=75\text{ kHz}\) and \(f_m=15\text{ kHz}\). Find \(\beta\) and the Carson bandwidth. What do they become after a frequency tripler?</summary><div class="sol">
+    <p>\(\beta=5\). \(B=2(75+15)=180\text{ kHz}\).</p>
+    <p>After tripling: \(\Delta f=225\text{ kHz}\), \(\beta=15\), \(B=2(225+15)=480\text{ kHz}\). The message frequency is unchanged.</p>
+  </div></details>
+  <details class="q"><summary>A superheterodyne AM receiver with a 455 kHz IF is tuned to 1000 kHz, oscillator above the signal. Find the oscillator and image frequencies.</summary><div class="sol">
+    <p>\(f_{LO}=1455\text{ kHz}\). Image \(=1000+910=1910\text{ kHz}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="k-info">
+  <h2>Information theory</h2>
+  <p class="syl">Syllabus: entropy, source coding, mutual information and channel capacity theorem.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>Information</b> in an outcome of probability \(p\): \(I=\log_2\dfrac1p\) bits. Rare events carry more information.</li>
+    <li><b>Entropy</b> is the average information per symbol: \[H(X)=-\sum_ip_i\log_2p_i\ \text{bits/symbol}\] \(0\le H\le\log_2M\) for \(M\) symbols, with the maximum when all are equally likely.</li>
+    <li><b>Source coding theorem:</b> the average codeword length \(L\) of any uniquely decodable code satisfies \(L\ge H\). Efficiency \(=H/L\). A Huffman code is the optimal prefix code and achieves \(H\le L\lt H+1\).</li>
+    <li><b>Kraft inequality:</b> a prefix code with lengths \(l_i\) exists only if \(\sum2^{-l_i}\le1\).</li>
+    <li><b>Joint and conditional entropy:</b> \(H(X,Y)=H(X)+H(Y|X)\). <b>Mutual information:</b> \[I(X;Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)=H(X)+H(Y)-H(X,Y)\ge0\]</li>
+    <li><b>Channel capacity</b> is the largest mutual information over all input distributions. Binary symmetric channel with crossover probability \(p\): \(C=1-H(p)\). Binary erasure channel with erasure probability \(\alpha\): \(C=1-\alpha\).</li>
+    <li><b>Shannon–Hartley theorem</b> for a band-limited Gaussian channel: \[C=B\log_2\left(1+\frac SN\right)\ \text{bits/s},\qquad N=N_0B\]</li>
+    <li>As \(B\to\infty\): \(C\to1.44\,\dfrac{S}{N_0}\). Error-free communication is impossible below \(\dfrac{E_b}{N_0}=\ln2\), which is −1.59 dB.</li>
+    <li><b>Channel coding theorem:</b> if the information rate \(R=rH\) (symbol rate times entropy) is below \(C\), codes exist that make the error probability as small as desired. Above \(C\), none do.</li>
+  </ul></div>
+  <div class="sim" data-sim="entropy"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>ZIP files, PNG images and MP3 audio all end with an entropy coder that gives short codes to common patterns. Morse code did the same by hand in the 1830s: “E”, the most frequent letter in English, is a single dot. Wi-Fi and 4G/5G constantly measure the signal-to-noise ratio and switch modulation and coding to stay just under the Shannon capacity of the moment.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>The capacity formula needs \(S/N\) as a ratio. Convert from dB first.</li>
+    <li>Use \(\log_2\). If your calculator has only \(\log_{10}\): \(\log_2x=3.322\log_{10}x\).</li>
+    <li>A Huffman code is not unique, but its average length is.</li>
+    <li>Doubling the bandwidth also doubles the noise power, so capacity less than doubles for a fixed signal power.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A source emits four symbols with probabilities \(\tfrac12,\tfrac14,\tfrac18,\tfrac18\). Find the entropy and the average length of a Huffman code.</summary><div class="sol">
+    <p>\(H=\tfrac12(1)+\tfrac14(2)+\tfrac18(3)+\tfrac18(3)=1.75\text{ bits/symbol}\).</p>
+    <p>Huffman lengths are 1, 2, 3, 3, giving \(L=1.75\). Efficiency is 100 % because every probability is a power of \(\tfrac12\).</p>
+  </div></details>
+  <details class="q"><summary>A channel has a bandwidth of 4 kHz and a signal-to-noise ratio of 1023. Find its capacity.</summary><div class="sol">
+    <p>\(C=4000\log_2(1024)=4000\times10=40\text{ kbit/s}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="k-digital">
+  <h2>Digital communications</h2>
+  <p class="syl">Syllabus: PCM, DPCM, digital modulation schemes (ASK, PSK, FSK, QAM), bandwidth, inter-symbol interference, MAP, ML detection, matched filter receiver, SNR and BER.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li><b>PCM:</b> sample at \(f_s\ge2W\), quantise to \(L=2^n\) levels, encode \(n\) bits per sample. Bit rate \(R_b=nf_s\). Minimum transmission bandwidth \(\dfrac{R_b}{2}\).</li>
+    <li>Uniform quantiser with step \(\Delta\): noise power \(\dfrac{\Delta^2}{12}\). Full-scale sine: \(\text{SQNR}=6.02n+1.76\text{ dB}\). Each extra bit adds 6 dB. Companding (µ-law, A-law) keeps the ratio roughly constant for quiet and loud speech.</li>
+    <li><b>DPCM</b> quantises the difference between a sample and its prediction, which has a smaller range, so fewer bits are needed. <b>Delta modulation</b> is 1-bit DPCM: slope overload occurs unless \(\Delta\,f_s\ge\max\left|\dfrac{dm}{dt}\right|\), which for a tone is \(2\pi f_mA_m\). Too large a step causes granular noise instead.</li>
+    <li><b>Inter-symbol interference</b> is avoided when the overall pulse is zero at every other sampling instant (Nyquist criterion). Minimum baseband bandwidth \(\dfrac{R_b}{2}\) with a sinc pulse. A <b>raised-cosine</b> pulse with roll-off \(\alpha\) needs \(\dfrac{R_b}{2}(1+\alpha)\) at baseband and twice that after modulation.</li>
+    <li><b>Matched filter:</b> \(h(t)=s(T-t)\). It maximises the SNR at the sampling instant, and the maximum is \(\dfrac{2E}{N_0}\), which depends only on the pulse energy, not on its shape. A correlator gives the same result.</li>
+    <li><b>MAP detection</b> picks the symbol with the largest posterior probability \(P(s_i|r)\) and minimises the error probability. <b>ML detection</b> picks the largest likelihood \(p(r|s_i)\). They coincide when the symbols are equally likely. In Gaussian noise, ML means choosing the nearest constellation point.</li>
+    <li>Two equally likely signals a distance \(d\) apart in Gaussian noise: \(P_e=Q\!\left(\dfrac{d}{\sqrt{2N_0}}\right)\), where \(Q(x)=\tfrac12\operatorname{erfc}(x/\sqrt2)\).</li>
+  </ul>
+  <div class="tw"><table>
+    <thead><tr><th>Scheme (coherent unless stated)</th><th>Bit error probability</th><th>Null-to-null bandwidth</th></tr></thead>
+    <tbody>
+      <tr><td>BPSK</td><td>\(Q\!\left(\sqrt{2E_b/N_0}\right)\)</td><td>\(2R_b\)</td></tr>
+      <tr><td>QPSK</td><td>\(Q\!\left(\sqrt{2E_b/N_0}\right)\)</td><td>\(R_b\)</td></tr>
+      <tr><td>BFSK, orthogonal</td><td>\(Q\!\left(\sqrt{E_b/N_0}\right)\)</td><td>\(|f_1-f_2|+2R_b\)</td></tr>
+      <tr><td>On-off keying (ASK), average \(E_b\)</td><td>\(Q\!\left(\sqrt{E_b/N_0}\right)\)</td><td>\(2R_b\)</td></tr>
+      <tr><td>BFSK, non-coherent</td><td>\(\tfrac12e^{-E_b/2N_0}\)</td><td>\(|f_1-f_2|+2R_b\)</td></tr>
+      <tr><td>DPSK</td><td>\(\tfrac12e^{-E_b/N_0}\)</td><td>\(2R_b\)</td></tr>
+      <tr><td>\(M\)-ary PSK or QAM</td><td>rises with \(M\)</td><td>\(\dfrac{2R_b}{\log_2M}\)</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>\(E_s=E_b\log_2M\). With Gray coding, bit error rate ≈ symbol error rate ÷ \(\log_2M\).</li>
+    <li>\(M\)-ary PSK and QAM save bandwidth and cost power. \(M\)-ary orthogonal FSK saves power and costs bandwidth.</li>
+  </ul></div>
+  <div class="sim" data-sim="quantize"></div>
+  <div class="sim" data-sim="constellation"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>A Wi-Fi link close to the router uses 256-QAM or 1024-QAM, packing 8 or 10 bits into each symbol. Walk away and the signal-to-noise ratio falls, the dots of the constellation smear into each other, and the link steps down to 64-QAM, 16-QAM, QPSK and finally BPSK. Landline telephony digitises speech as 8000 samples per second × 8 bits, which is the 64 kbit/s channel that all later telecom rates were built from.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Check whether the question gives energy per bit or per symbol, and whether noise density is \(N_0\) or \(N_0/2\).</li>
+    <li>QPSK has the same bit error rate as BPSK, but about twice the symbol error rate.</li>
+    <li>Raised-cosine bandwidth at baseband is \(\dfrac{R_s}{2}(1+\alpha)\). For a modulated (passband) signal it is \(R_s(1+\alpha)\). For \(M\)-ary signalling use the symbol rate \(R_s=R_b/\log_2M\).</li>
+    <li>The matched-filter output SNR does not depend on the pulse shape, only on its energy.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>Speech band-limited to 3.4 kHz is sampled at 8 kHz and quantised to 256 levels. Find the bit rate, the minimum transmission bandwidth and the SQNR for a full-scale sine.</summary><div class="sol">
+    <p>\(n=8\). \(R_b=64\text{ kbit/s}\). Minimum bandwidth \(=32\text{ kHz}\). SQNR \(=6.02\times8+1.76=49.9\text{ dB}\).</p>
+  </div></details>
+  <details class="q"><summary>Binary data at 1 Mbit/s uses raised-cosine pulses with \(\alpha=0.5\). Find the bandwidth at baseband and for BPSK.</summary><div class="sol">
+    <p>Baseband: \(\dfrac{1\text{ MHz}}{2}(1.5)=750\text{ kHz}\). BPSK: \(1.5\text{ MHz}\).</p>
+  </div></details>
+</section>
+
+<section class="topic" id="k-coding">
+  <h2>Error correction</h2>
+  <p class="syl">Syllabus: fundamentals of error correction, Hamming codes, CRC.</p>
+  <div class="notes"><h3>Notes</h3><ul>
+    <li>An <b>\((n,k)\) block code</b> maps \(k\) message bits to \(n\) code bits. Rate \(=k/n\). The <b>Hamming distance</b> between two words is the number of positions in which they differ.</li>
+    <li>With minimum distance \(d_{min}\): detects up to \(d_{min}-1\) errors, corrects up to \(t=\left\lfloor\dfrac{d_{min}-1}{2}\right\rfloor\) errors. For a linear code, \(d_{min}\) equals the smallest weight of any non-zero codeword.</li>
+    <li><b>Hamming bound:</b> to correct \(t\) errors, \(2^{n-k}\ge\sum_{i=0}^{t}\binom ni\).</li>
+    <li><b>Hamming codes:</b> \(n=2^m-1\), \(k=n-m\), \(d_{min}=3\). Examples: (7,4), (15,11), (31,26). They correct any single error and meet the Hamming bound with equality (perfect codes). Adding one overall parity bit gives \(d_{min}=4\): single-error correction with double-error detection.</li>
+    <li><b>Systematic form:</b> generator \(G=[\,I_k\;|\;P\,]\), parity-check \(H=[\,P^T\;|\;I_{n-k}\,]\), and \(GH^T=0\). Codeword \(c=mG\).</li>
+    <li><b>Syndrome:</b> \(s=rH^T=eH^T\). It depends only on the error pattern. Zero syndrome: accept. For a single error, the syndrome equals the column of \(H\) at the error position.</li>
+    <li>A <b>single parity bit</b> detects any odd number of errors. A <b>repetition code</b> \((n,1)\) has \(d_{min}=n\).</li>
+    <li><b>CRC</b> with generator polynomial \(g(x)\) of degree \(r\): append \(r\) zeros to the message, divide by \(g(x)\) using modulo-2 arithmetic, and transmit the message followed by the \(r\)-bit remainder. The receiver divides the whole frame by \(g(x)\). A non-zero remainder means an error.</li>
+    <li>A CRC detects every burst error of length \(r\) or less, every single-bit error (if \(g\) has at least two terms), and every odd number of errors if \((x+1)\) divides \(g(x)\).</li>
+  </ul></div>
+  <div class="sim" data-sim="hamming"></div>
+  <aside class="real"><h3>Seen in real life</h3>
+    <p>Server memory (ECC RAM) stores every word with a Hamming-type code so that a bit flipped by a cosmic ray is corrected silently. Every Ethernet frame, ZIP file and CAN message carries a CRC, and a frame that fails the check is discarded and sent again. A QR code still scans with a corner torn off because a stronger relative of these codes (Reed–Solomon) rebuilds the missing part.</p>
+  </aside>
+  <aside class="trap"><h3>Common traps</h3><ul>
+    <li>Detecting \(d_{min}-1\) errors and correcting \(t\) errors are alternatives. A code used for correction detects fewer.</li>
+    <li>Modulo-2 arithmetic has no carries or borrows. Addition and subtraction are both XOR.</li>
+    <li>Parity bits of the classic Hamming layout sit at positions 1, 2, 4, 8, counted from 1.</li>
+    <li>A CRC detects errors. It does not correct them.</li>
+  </ul></aside>
+  <h3>Practice</h3>
+  <details class="q"><summary>A block code has \(d_{min}=5\). How many errors can it detect? How many can it correct?</summary><div class="sol">
+    <p>Detect up to 4. Correct up to \(\lfloor4/2\rfloor=2\).</p>
+  </div></details>
+  <details class="q"><summary>The message 1001 is protected by a CRC with \(g(x)=x^3+x+1\) (1011). Find the transmitted frame.</summary><div class="sol">
+    <p>Append three zeros: 1001000. Divide by 1011 with XOR:</p>
+    <p>\(1001\oplus1011=0010\), leaving 0010000. The next leading 1 aligns 1011 under 1000: \(1000\oplus1011=0011\), leaving 0000110. The remainder is 110.</p>
+    <p>Transmitted frame: 1001110. Check: dividing 1001110 by 1011 leaves 000.</p>
+  </div></details>
+</section>
